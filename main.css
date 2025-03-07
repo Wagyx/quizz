@@ -1,0 +1,43 @@
+button > label{
+    cursor: pointer; /* Pointer/hand icon */
+}
+button {
+    font-size: large;
+    padding: 10px 24px; /* Some padding */
+    margin: 5px 5px;
+    cursor: pointer; /* Pointer/hand icon */
+}
+.btn-group {
+    /* display: flex;
+    justify-content: space-between; */
+    display: grid;
+    grid-template-columns: repeat(n, 1fr);
+    gap: 10px;
+}
+/* .btn-group button { */
+    /* padding: 10px 24px; /* Some padding */
+    /* float: left; /* Float the buttons side by side */
+/* } */
+button.selected {
+    background-color: lightBlue;
+}
+  
+div#quizz {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    text-align: center;
+    font-size: xx-large;
+}
+video {
+    width:80%;
+}
+
+input[type="text"] {
+    width: 80%;
+}
+
+input[type="file"] {
+    display: none;
+}
