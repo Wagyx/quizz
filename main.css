@@ -4,6 +4,7 @@ button>label {
 }
 
 button {
+    /* max-width: 80%; */
     font-size: large;
     padding: 10px 24px;
     /* Some padding */
@@ -15,6 +16,7 @@ button {
 .btn-group {
     /* display: flex;
     justify-content: space-between; */
+    justify-content: center;
     display: grid;
     grid-template-columns: repeat(n, 1fr);
     gap: 10px;
@@ -40,7 +42,20 @@ div#quizz > div {
     width:100%;
 }
 
+div#quizz > div > p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+div#quizz > div > h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 video.myvideo {
+    height: 400px;
+}
+
+img {
     height: 400px;
 }
 
