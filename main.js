@@ -5,7 +5,7 @@ class Quizz {
         this.answers = [];
         this.currentIndex = -1;
         this.divElement = document.getElementById('quizz');
-        this.timePerQuestion = 2000;
+        this.timePerQuestion = 3000;
         this.decrementTime = 100;
         this.remainingTime = 0;
         this.interval = undefined;
@@ -32,7 +32,7 @@ class Quizz {
         questionDiv.appendChild(catElement);
 
         const descElement = document.createElement('p');
-        descElement.textContent = "You have 10 seconds to answer each question";
+        descElement.innerHTML = "You have a limited time to answer each question. <br> Please do not leave or reload the page during a round.";
         questionDiv.appendChild(descElement);
 
         // const inputDescElement = document.createElement('p');
@@ -44,9 +44,9 @@ class Quizz {
         questionDiv.appendChild(fileBtnElement);
         const labelElement = document.createElement('label');
         labelElement.htmlFor = "file-upload";
-        labelElement.textContent = "Load"
+        labelElement.textContent = "Load Questions"
         fileBtnElement.appendChild(labelElement);
-        fileBtnElement.onclick = function(){
+        fileBtnElement.onclick = function () {
             labelElement.click();
         }
 
@@ -67,7 +67,7 @@ class Quizz {
 
         const button = document.createElement('button');
         questionDiv.appendChild(button);
-        button.textContent = "Start"
+        button.textContent = "Start round"
         button.onclick = function () {
             self.next();
         }
@@ -83,23 +83,23 @@ class Quizz {
         this.divElement.appendChild(questionDiv);
 
         const catElement = document.createElement('h3');
-        catElement.textContent = "Félicitations";
+        catElement.textContent = "Congratulations ! The quizz is over";
         questionDiv.appendChild(catElement);
 
         const descElement = document.createElement('p');
-        descElement.textContent = "Vous avez terminé, n'oubliez pas de soumettre vos réponses";
+        descElement.textContent = "Please save your answers";
         questionDiv.appendChild(descElement);
 
         const saveButton = document.createElement('button');
         questionDiv.appendChild(saveButton);
-        saveButton.textContent = "Sauvegarder les réponses"
+        saveButton.textContent = "Save"
         saveButton.onclick = function () {
             saveTemplateAsFile("answers.json", self.answers)
         }
 
         const resetButton = document.createElement('button');
         questionDiv.appendChild(resetButton);
-        resetButton.textContent = "Reset"
+        resetButton.textContent = "New Round"
         resetButton.onclick = function () {
             self.currentIndex = -2;
             self.next();
@@ -108,25 +108,67 @@ class Quizz {
     }
 
     createAudioElement(question, parent) {
-        const element = document.createElement('audio');
-        element.src = question.link;
-        element.autoplay = true;
-        // to start the audio at a specific time stamp
-        // element.addEventListener('loadedmetadata', function() {
-        //     this.currentTime = 0;
-        //   }, false);
+        console.log("createAudioElement")
+        const element = document.createElement('p');
+        element.textContent = "🎶  Music is on play  🎶"
+        // 🎼🎵 🎶 ♩ ♪ ♬ ♫ 𝄞
         parent.appendChild(element);
+
+        if (question.link.includes("youtube.com")) {
+            console.log("youtube")
+            const divElement = document.createElement('div');
+            divElement.className = "yt-embed-holder";
+            divElement.style="visibility:hidden;"
+            parent.appendChild(divElement);
+
+            const iframeElement = document.createElement('iframe');
+            const link = question.link.split("?")[0] + "?autoplay=1&rel=0&controls=0&modestbranding=0"
+            iframeElement.src = link;
+            iframeElement.style = "height:0px";
+            divElement.appendChild(iframeElement);
+
+            divElement.autoplay = true;
+        }
+        else {
+            console.log("normal")
+
+            const audioElement = document.createElement('audio');
+            audioElement.src = question.link;
+            audioElement.autoplay = true;
+            // to start the audio at a specific time stamp
+            // element.addEventListener('loadedmetadata', function() {
+            //     this.currentTime = 0;
+            //   }, false);
+            parent.appendChild(audioElement);
+        }
     }
 
     createVideoElement(question, parent) {
-        const element = document.createElement('video');
-        element.src = question.link;
-        element.autoplay = true;
-        // to start the audio at a specific time stamp
-        // element.addEventListener('loadedmetadata', function() {
-        //     this.currentTime = 0;
-        //   }, false);
-        parent.appendChild(element);
+
+        if (question.link.includes("youtube.com")) {
+            console.log("youtube")
+            const divElement = document.createElement('div');
+            divElement.className = "yt-embed-holder";
+            parent.appendChild(divElement);
+
+            const iframeElement = document.createElement('iframe');
+            const link = question.link.split("?")[0] + "?autoplay=1&rel=0&controls=0&modestbranding=0"
+            iframeElement.src = link;
+            divElement.appendChild(iframeElement);
+
+            divElement.autoplay = true;
+        }
+        else {
+            const element = document.createElement('video');
+            element.className = "myvideo";
+            element.src = question.link;
+            element.autoplay = true;
+            // to start the audio at a specific time stamp
+            // element.addEventListener('loadedmetadata', function() {
+            //     this.currentTime = 0;
+            //   }, false);
+            parent.appendChild(element);
+        }
     }
 
     createImageElement(question, parent) {
@@ -140,7 +182,7 @@ class Quizz {
     createSingleElement(question, parent) {
         const self = this;
         const labelElement = document.createElement('p');
-        labelElement.textContent = "Réponse:";
+        labelElement.textContent = "Answer:";
         parent.appendChild(labelElement);
         const answerElement = document.createElement('input');
         parent.appendChild(answerElement);
@@ -154,7 +196,7 @@ class Quizz {
     createMultiElement(question, parent) {
         const self = this;
         const labelElement = document.createElement('p');
-        labelElement.textContent = "Réponse:";
+        labelElement.textContent = "Answer:";
         parent.appendChild(labelElement);
         const answerElement = document.createElement('div');
         answerElement.className = "btn-group";
@@ -176,16 +218,16 @@ class Quizz {
         }
     }
 
-    createQuestionElement(question,parent){
-        if (question.question_type== "audio"){this.createAudioElement(question,parent);}
-        else if (question.question_type== "video"){this.createVideoElement(question,parent);}
-        else if (question.question_type== "image"){this.createImageElement(question,parent);}
-        else if (question.question_type== "text"){this.createTextElement(question,parent);}
+    createQuestionElement(question, parent) {
+        if (question.question_type == "audio") { this.createAudioElement(question, parent); }
+        else if (question.question_type == "video") { this.createVideoElement(question, parent); }
+        else if (question.question_type == "image") { this.createImageElement(question, parent); }
+        else if (question.question_type == "text") { this.createTextElement(question, parent); }
 
     }
-    createAnswerElement(question,parent){
-        if(question.answer_type == "single"){this.createSingleElement(question,parent);}
-        else if(question.answer_type == "multi"){this.createMultiElement(question,parent);}
+    createAnswerElement(question, parent) {
+        if (question.answer_type == "single") { this.createSingleElement(question, parent); }
+        else if (question.answer_type == "multi") { this.createMultiElement(question, parent); }
 
     }
 
@@ -212,7 +254,7 @@ class Quizz {
         this.createAnswerElement(question, questionDiv);
 
         const timeElement = document.createElement('p');
-        timeElement.textContent = "Temps restant: " + (self.remainingTime / 1000.0).toFixed(1) + "s";
+        timeElement.textContent = "Time left: " + (self.remainingTime / 1000.0).toFixed(1) + "s";
         questionDiv.appendChild(timeElement);
 
         // Update the count down every 1 second
@@ -223,7 +265,7 @@ class Quizz {
                 self.remainingTime = self.timePerQuestion;
                 self.next();
             }
-            timeElement.textContent = "Temps restant: " + (self.remainingTime / 1000.0).toFixed(1) + "s";
+            timeElement.textContent = "Time left: " + (self.remainingTime / 1000.0).toFixed(1) + "s";
         }, this.decrementTime);
 
     }
