@@ -1,9 +1,11 @@
 [
+    { "category": "Music", "description": "What is this video ?", "question_type": "audio", "answer_type":"single", "link": "https://www.youtube.com/embed/QaMMWRpwOhE" },
+    { "category": "Video", "description": "What is this video ?", "question_type": "video", "answer_type":"single", "link": "https://www.youtube.com/embed/QaMMWRpwOhE" },
     { "category": "Video", "description": "What is this video ?", "question_type": "video", "answer_type":"single", "link": "data/test.mp4" },
+    { "category": "Music", "description": "What is this music ?", "question_type": "audio", "answer_type":"single", "link": "https://asliceofcuriosity.fr/assets/voxel-video/data/bad_apple_enhanced.mp3" },
+    { "category": "Image", "description": "What is this image ?", "question_type": "image", "answer_type":"single", "link": "https://asliceofcuriosity.fr/images/geometry/geomag/geomag-gallery.png" },
     { "category": "Video", "description": "What is this video ?", "question_type": "video", "answer_type":"multi", "link": "data/test.mp4", "propositions": ["vid000", "vid1111", "vid2222", "vid3333"] },
-    { "category": "Music", "description": "What is this music ?", "question_type": "audio", "answer_type":"single", "link": "data/test.mp3" },
     { "category": "Music", "description": "What is this music ?", "question_type": "audio", "answer_type":"multi", "link": "data/test.mp3", "propositions": ["audio00000", "audio111111", "audio22222", "audio3333"] },
-    { "category": "Image", "description": "What is this image ?", "question_type": "image", "answer_type":"single", "link": "data/test.jpg" },
     { "category": "Image", "description": "What is this image ?", "question_type": "image", "answer_type":"multi", "link": "data/test.jpg", "propositions": ["img00000", "img111111", "img22222", "img3333"]},
     { "category": "Text", "description": "What is love ?", "question_type": "text", "answer_type":"single" },
     { "category": "Text", "description": "baby don't hurt me no more", "question_type": "text", "answer_type":"multi", "propositions": ["textAAAA", "textBBBBBB", "textCCCCCCCCCC", "textDDDDDD"] }
