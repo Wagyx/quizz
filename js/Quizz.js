@@ -12,6 +12,7 @@ export class Quizz {
   constructor(container, defaultFilename) {
     this.questions = [];
     this.answers = [];
+    this.userName = "Default";
     this.currentIndex = -1;
     this.container = container;
     this.currentView = null;
@@ -48,7 +49,8 @@ export class Quizz {
       (questions) => {
         this.questions = questions;
         this.answers = new Array(this.questions.length).fill("");
-      }
+      },
+      (userName) => {this.userName = userName;}
     );
 
     this.currentView.render();
@@ -62,7 +64,7 @@ export class Quizz {
       this.currentView.stopTimer?.();
     }
 
-    this.currentView = new EndingView(this.container, this.answers, () => {
+    this.currentView = new EndingView(this.container, this.userName, this.answers, () => {
       this.currentIndex = -2;
       this.next();
     });

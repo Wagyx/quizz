@@ -6,11 +6,13 @@ export class InstructionsView {
    * @param {HTMLElement} container - Élément conteneur
    * @param {Function} onStart - Fonction à appeler quand l'utilisateur démarre
    * @param {Function} onQuestionsLoaded - Fonction à appeler quand les questions sont chargées
+   * @param {Function} onUserName - Fonction à appeler quand l'utilisateur ajoute son nom
    */
-  constructor(container, onStart, onQuestionsLoaded) {
+  constructor(container, onStart, onQuestionsLoaded, onUserName) {
     this.container = container;
     this.onStart = onStart;
     this.onQuestionsLoaded = onQuestionsLoaded;
+    this.onUserName = onUserName;
   }
 
   /**
@@ -31,41 +33,63 @@ export class InstructionsView {
       "Vous avez un temps limité pour répondre à chaque question. <br> Veuillez ne pas quitter ou recharger la page pendant un tour.";
     questionDiv.appendChild(descElement);
 
+    // champ pour entrer le nom de l'utilisateur
+    {
+      const labelElement2 = document.createElement("label");
+      labelElement2.htmlFor = "user-name";
+      labelElement2.textContent = "Veuillez entrer votre nom d'utilisateur";
+      questionDiv.appendChild(labelElement2);
+
+      const answerElement = document.createElement("input");
+      questionDiv.appendChild(answerElement);
+      answerElement.type = "text";
+      answerElement.id = "user-name";
+
+      answerElement.onkeyup = () => {
+        if (this.onUserName) {
+          this.onUserName(answerElement.value);
+        }
+      };
+    }
+
     // Bouton pour charger des questions
-    const fileBtnElement = document.createElement("button");
-    questionDiv.appendChild(fileBtnElement);
+    {
+      const fileBtnElement = document.createElement("button");
+      questionDiv.appendChild(fileBtnElement);
 
-    const labelElement = document.createElement("label");
-    labelElement.htmlFor = "file-upload";
-    labelElement.textContent = "Charger des questions";
-    fileBtnElement.appendChild(labelElement);
+      const labelElement = document.createElement("label");
+      labelElement.htmlFor = "file-upload";
+      labelElement.textContent = "Charger des questions";
+      fileBtnElement.appendChild(labelElement);
 
-    fileBtnElement.onclick = () => {
-      labelElement.click();
-    };
+      fileBtnElement.onclick = () => {
+        labelElement.click();
+      };
 
-    const inputElement = document.createElement("input");
-    questionDiv.appendChild(inputElement);
-    inputElement.type = "file";
-    inputElement.id = "file-upload";
-    inputElement.accept = "application/json";
+      const inputElement = document.createElement("input");
+      questionDiv.appendChild(inputElement);
+      inputElement.type = "file";
+      inputElement.id = "file-upload";
+      inputElement.accept = "application/json";
 
-    inputElement.addEventListener("change", () => {
-      if (inputElement.files.length == 1) {
-        this.loadQuestionsFromFile(inputElement.files[0]);
-      }
-    });
+      inputElement.addEventListener("change", () => {
+        if (inputElement.files.length == 1) {
+          this.loadQuestionsFromFile(inputElement.files[0]);
+        }
+      });
 
-    // Bouton pour démarrer
-    const startButton = document.createElement("button");
-    questionDiv.appendChild(startButton);
-    startButton.textContent = "Commencer";
+      // Bouton pour démarrer
+      const startButton = document.createElement("button");
+      questionDiv.appendChild(startButton);
+      startButton.textContent = "Commencer";
 
-    startButton.onclick = () => {
-      if (this.onStart) {
-        this.onStart();
-      }
-    };
+      startButton.onclick = () => {
+        if (this.onStart) {
+          this.onStart();
+        }
+      };
+    }
+
   }
 
   /**
