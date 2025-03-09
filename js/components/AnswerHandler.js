@@ -1,3 +1,5 @@
+import { shuffle } from "../utils.js";
+
 /**
  * Classe responsable de l'affichage et de la gestion des réponses
  */
@@ -83,8 +85,11 @@ export class AnswerHandler {
     answerElement.className = "btn-group";
     parent.appendChild(answerElement);
 
+    const propositions = [...question.propositions];
+    shuffle(propositions);
+
     const buttons = [];
-    for (let proposition of question.propositions) {
+    for (let proposition of propositions) {
       const button = document.createElement("button");
       button.className =
         proposition === currentAnswer ? "selected" : "unselected";
