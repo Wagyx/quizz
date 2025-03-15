@@ -1,3 +1,13 @@
+import { loadLocalJson } from "../utils.js"
+
+function questionToHtmlString(quizzData) {
+  return `<u>Infos du quizz</u></br>
+  Nom : ${quizzData.quizzName}</br>
+  Date : ${quizzData.date}</br>
+  Heure : ${quizzData.time}</br>
+  Nombre de questions : ${quizzData.questions.length}`;
+}
+
 /**
  * Vue pour afficher les instructions du quizz
  */
@@ -5,13 +15,13 @@ export class InstructionsView {
   /**
    * @param {HTMLElement} container - Élément conteneur
    * @param {Function} onStart - Fonction à appeler quand l'utilisateur démarre
-   * @param {Function} onQuestionsLoaded - Fonction à appeler quand les questions sont chargées
+   * @param {Function} onQuizzLoaded - Fonction à appeler quand les questions sont chargées
    * @param {Function} onUserName - Fonction à appeler quand l'utilisateur ajoute son nom
    */
-  constructor(container, onStart, onQuestionsLoaded, onUserName) {
+  constructor(container, onStart, onQuizzLoaded, onUserName) {
     this.container = container;
     this.onStart = onStart;
-    this.onQuestionsLoaded = onQuestionsLoaded;
+    this.onQuizzLoaded = onQuizzLoaded;
     this.onUserName = onUserName;
   }
 
@@ -35,13 +45,13 @@ export class InstructionsView {
 
     // champ pour entrer le nom de l'utilisateur
     {
-      const labelElement2 = document.createElement("label");
-      labelElement2.htmlFor = "user-name";
-      labelElement2.textContent = "Veuillez entrer votre nom d'utilisateur";
-      questionDiv.appendChild(labelElement2);
+      const labelElement = document.createElement("label");
+      labelElement.htmlFor = "user-name";
+      labelElement.textContent = "Veuillez entrer votre nom d'utilisateur";
+      questionDiv.appendChild(labelElement);
 
       const answerElement = document.createElement("input");
-      questionDiv.appendChild(answerElement);
+      labelElement.appendChild(answerElement);
       answerElement.type = "text";
       answerElement.id = "user-name";
 
@@ -51,6 +61,7 @@ export class InstructionsView {
         }
       };
     }
+    
 
     // Bouton pour charger des questions
     {
@@ -59,7 +70,7 @@ export class InstructionsView {
 
       const labelElement = document.createElement("label");
       labelElement.htmlFor = "file-upload";
-      labelElement.textContent = "Charger des questions";
+      labelElement.textContent = "Charger un quizz";
       fileBtnElement.appendChild(labelElement);
 
       fileBtnElement.onclick = () => {
@@ -71,10 +82,15 @@ export class InstructionsView {
       inputElement.type = "file";
       inputElement.id = "file-upload";
       inputElement.accept = "application/json";
+      
+      const questElement = document.createElement("p");
+      questionDiv.appendChild(questElement);
 
       inputElement.addEventListener("change", () => {
         if (inputElement.files.length == 1) {
-          this.loadQuestionsFromFile(inputElement.files[0]);
+          this.loadQuestionsFromFile(inputElement.files[0],(data)=>{
+            questElement.innerHTML = questionToHtmlString(data);
+          });
         }
       });
 
@@ -96,17 +112,13 @@ export class InstructionsView {
    * Charge les questions depuis un fichier
    * @param {File} file - Fichier JSON contenant les questions
    */
-  async loadQuestionsFromFile(file) {
-    try {
-      const fileContent = await file.text();
-      const questions = JSON.parse(fileContent);
-
-      if (this.onQuestionsLoaded) {
-        this.onQuestionsLoaded(questions);
+  async loadQuestionsFromFile(file, onload) {
+    loadLocalJson(file, (data) => {
+      onload(data);
+      if (this.onQuizzLoaded) {
+        this.onQuizzLoaded(data);
       }
-    } catch (error) {
-      console.error("Erreur lors du chargement des questions:", error);
-    }
+    });
   }
 
   /**

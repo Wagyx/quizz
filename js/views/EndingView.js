@@ -6,15 +6,13 @@ import { saveTemplateAsFile } from "../utils.js";
 export class EndingView {
   /**
    * @param {HTMLElement} container - Élément conteneur
-   * @param {Array<string>} answers - Réponses de l'utilisateur
+   * @param {Object} answerData - Réponses de l'utilisateur
    * @param {Function} onNewRound - Fonction appelée pour commencer une nouvelle partie
-   * @param {String} userName - the name of the user
    */
-  constructor(container, userName, answers, onNewRound) {
+  constructor(container, answerData, onNewRound) {
     this.container = container;
-    this.answers = answers;
+    this.answerData = answerData;
     this.onNewRound = onNewRound;
-    this.userName = userName;
   }
 
   /**
@@ -27,7 +25,7 @@ export class EndingView {
     this.container.appendChild(questionDiv);
 
     const titleElement = document.createElement("h3");
-    titleElement.textContent = `Félicitations ${this.userName} ! Le quizz est terminé`;
+    titleElement.textContent = `Merci d'avoir joué ${this.answerData.userName} ! Le quizz est terminé`;
     questionDiv.appendChild(titleElement);
 
     const descElement = document.createElement("p");
@@ -40,11 +38,7 @@ export class EndingView {
     saveButton.textContent = "Sauvegarder";
 
     saveButton.onclick = () => {
-      const obj = {
-        "userName":this.userName,
-        "answers":this.answers,
-      }
-      saveTemplateAsFile("answers.json", obj);
+      saveTemplateAsFile("answers.json", this.answerData);
     };
 
     // Bouton pour commencer une nouvelle partie

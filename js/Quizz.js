@@ -1,6 +1,7 @@
 import { InstructionsView } from "./views/InstructionsView.js";
 import { QuestionView } from "./views/QuestionView.js";
 import { EndingView } from "./views/EndingView.js";
+import { fetchJson } from "./utils.js"
 
 /**
  * Classe principale gérant le quizz
@@ -10,7 +11,7 @@ export class Quizz {
    * Initialise un nouveau quizz
    */
   constructor(container, defaultFilename) {
-    this.questions = [];
+    this.quizzData = [];
     this.answers = [];
     this.userName = "Default";
     this.currentIndex = -1;
@@ -18,21 +19,18 @@ export class Quizz {
     this.currentView = null;
 
     this.loadInitialQuestions(defaultFilename);
+    
   }
 
   /**
    * Charge les questions initiales depuis un fichier JSON
    */
   async loadInitialQuestions(filename) {
-    try {
-      const response = await fetch(filename);
-      this.questions = await response.json();
-      this.answers = new Array(this.questions.length).fill("");
+    fetchJson(filename,(data)=>{
+      this.quizzData = data;
+      this.answers = new Array(this.quizzData.questions.length).fill("");
       this.showInstructions();
-    } catch (error) {
-      console.error("Erreur lors du chargement des questions:", error);
-      this.showInstructions();
-    }
+    })
   }
 
   /**
@@ -46,9 +44,9 @@ export class Quizz {
     this.currentView = new InstructionsView(
       this.container,
       () => this.next(),
-      (questions) => {
-        this.questions = questions;
-        this.answers = new Array(this.questions.length).fill("");
+      (data) => {
+        this.quizzData = data;
+        this.answers = new Array(this.quizzData.questions.length).fill("");
       },
       (userName) => {this.userName = userName;}
     );
@@ -63,8 +61,16 @@ export class Quizz {
     if (this.currentView) {
       this.currentView.stopTimer?.();
     }
+    const currentdate = new Date();
 
-    this.currentView = new EndingView(this.container, this.userName, this.answers, () => {
+    const answerData = {
+      "quizzName":this.quizzData.quizzName,
+      "userName" : this.userName,
+      "date":`${currentdate.getDate()}/${currentdate.getMonth()+1}/${currentdate.getFullYear()}`,
+      "time":`${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`,
+      "answers":this.answers,
+    }
+    this.currentView = new EndingView(this.container, answerData, () => {
       this.currentIndex = -2;
       this.next();
     });
@@ -80,13 +86,13 @@ export class Quizz {
       this.currentView.stopTimer?.();
     }
 
-    const question = this.questions[this.currentIndex];
+    const question = this.quizzData.questions[this.currentIndex];
 
     this.currentView = new QuestionView(
       this.container,
       question,
       this.currentIndex,
-      this.questions.length,
+      this.quizzData.questions.length,
       this.answers[this.currentIndex],
       (index, answer) => {
         this.answers[index] = answer;
@@ -105,7 +111,7 @@ export class Quizz {
 
     if (this.currentIndex < 0) {
       this.showInstructions();
-    } else if (this.currentIndex >= this.questions.length) {
+    } else if (this.currentIndex >= this.quizzData.questions.length) {
       this.showEnding();
     } else {
       this.showQuestion();

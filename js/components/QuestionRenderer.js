@@ -43,7 +43,7 @@ export class QuestionRenderer {
       const iframeElement = document.createElement("iframe");
       const link =
         question.link.split("?")[0] +
-        "?autoplay=1&rel=0&controls=0&modestbranding=0";
+        "?autoplay=1&rel=0&controls=0&disablekb=1";
       iframeElement.src = link;
       iframeElement.style = "height:0px";
       divElement.appendChild(iframeElement);
@@ -69,7 +69,7 @@ export class QuestionRenderer {
       const iframeElement = document.createElement("iframe");
       const link =
         question.link.split("?")[0] +
-        "?autoplay=1&rel=0&controls=0&modestbranding=0";
+        "?autoplay=1&rel=0&controls=0&disablekb=1";
       iframeElement.src = link;
       divElement.appendChild(iframeElement);
     } else {
