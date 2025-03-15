@@ -9,10 +9,10 @@ export class QuizzCorrector {
         this.usersAnswers = [];
         this.currentIndex = 0;
 
-        this.loadInitialQuestions("../questions/quizz-test.json");
-        this.loadInitialAnswers("../questions/answers-test.json")
-        this.loadInitialAnswers("../questions/answers2-test.json")
-        this.loadInitialAnswers("../questions/answers3-test.json")
+        this.loadInitialQuestions("questions/quizz-test.json");
+        this.loadInitialAnswers("questions/answers-test.json")
+        this.loadInitialAnswers("questions/answers2-test.json")
+        this.loadInitialAnswers("questions/answers3-test.json")
 
         // this.showLoadPage();
     }
