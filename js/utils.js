@@ -38,3 +38,25 @@ export function shuffle(array) {
       array[randomIndex], array[currentIndex]];
   }
 }
+
+export async function fetchJson(filename, onload) {
+  try {
+    const response = await fetch(filename);
+    const data = await response.json();
+    onload(data);
+  } catch (error) {
+    console.error("Erreur lors du chargement du fichier:", error);
+    this.showInstructions();
+  }
+}
+
+export async function loadLocalJson(file, onload) {
+  try {
+    const fileContent = await file.text();
+    const data = JSON.parse(fileContent);
+    onload(data);
+  } catch (error) {
+    console.error("Erreur lors du chargement du fichier:", error);
+  }
+}
+

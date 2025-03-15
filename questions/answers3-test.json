@@ -1,0 +1,10 @@
+{
+    "quizzName":"test",
+    "date":"15-03-2025",
+    "time":"17:33:06",
+    "userName": "Charles",
+    "answers": [
+        "mon prof d'art plastique",
+        "Je sais pas"
+    ]
+}

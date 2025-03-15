@@ -1,3 +1,7 @@
+body {
+    background-color: lightgray;
+}
+
 button>label {
     cursor: pointer;
     /* Pointer/hand icon */
@@ -77,3 +81,31 @@ input[type="file"] {
     height: 400px;
     margin-left: -150%;
 }
+
+table {
+    border-collapse: collapse;
+    /* width:80%; */
+}
+table, th, td {
+    border: 0px solid;
+  }
+td>button {
+    width:100%;
+    margin:0px;
+  }
+button.validAnswer{
+    background-color: green;
+    color:white;
+    font-size: x-large;
+
+}
+button.nonValidAnswer{
+    background-color: red;
+    color:black;
+    font-size: x-large;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
