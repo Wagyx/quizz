@@ -29,7 +29,7 @@ export class QuestionView {
     this.index = index;
     this.total = total;
     this.currentAnswer = currentAnswer;
-    this.timePerQuestion = 3000; //TODO set the timerPerQuestion in the question
+    this.timePerQuestion = 30000; //TODO set the timerPerQuestion in the question
 
     this.questionRenderer = new QuestionRenderer();
     this.answerHandler = new AnswerHandler(onAnswerChanged);

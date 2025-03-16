@@ -73,8 +73,14 @@ input[type="file"] {
 
 .yt-embed-holder {
     overflow: hidden;
-    pointer-events: none;
 }
+.yt-audio {
+    visibility: hidden;
+    height: 0px;
+}
+#yt-player{
+    pointer-events: none;
+    }
 
 .yt-embed-holder iframe {
     width: 400%;
