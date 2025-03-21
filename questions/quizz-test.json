@@ -11,7 +11,7 @@
             "link": "https://www.youtube.com/embed/nsCIeklgp1M",
             "answer_type": "single",
             "answer": "Rick Astley",
-            "points":1
+            "points": 1
         },
         {
             "category": "Musique",
@@ -20,7 +20,7 @@
             "link": "data/test.mp4",
             "answer_type": "single",
             "answer": "Rick Astley",
-            "points":1
+            "points": 1
         },
         {
             "category": "Musique",
@@ -29,7 +29,7 @@
             "link": "https://www.youtube.com/embed/nsCIeklgp1M",
             "answer_type": "single",
             "answer": "Rick Astley",
-            "points":1
+            "points": 1
         },
         {
             "category": "Musique",
@@ -38,7 +38,7 @@
             "link": "data/test.mp3",
             "answer_type": "single",
             "answer": "Rick Astley",
-            "points":2
+            "points": 2
         },
         {
             "category": "Art",
@@ -46,7 +46,7 @@
             "question_type": "texte",
             "answer_type": "single",
             "answer": "Léonard de Vinci",
-            "points":1
+            "points": 1
         },
         {
             "category": "Art",
@@ -54,7 +54,7 @@
             "question_type": "texte",
             "answer_type": "single",
             "answer": "Paris",
-            "points":3
+            "points": 3
         }
-   ]
+    ]
 }

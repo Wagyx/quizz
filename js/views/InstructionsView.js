@@ -47,7 +47,7 @@ export class InstructionsView {
     {
       const labelElement = document.createElement("label");
       labelElement.htmlFor = "user-name";
-      labelElement.textContent = "Veuillez entrer votre nom d'utilisateur";
+      labelElement.textContent = "Veuillez entrer votre pseudo";
       questionDiv.appendChild(labelElement);
 
       const answerElement = document.createElement("input");

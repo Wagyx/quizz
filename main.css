@@ -65,6 +65,7 @@ img {
 
 input[type="text"] {
     width: 80%;
+    font-size: x-large;
 }
 
 input[type="file"] {
