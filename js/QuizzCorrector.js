@@ -131,7 +131,7 @@ export class QuizzCorrector {
             containerDiv.appendChild(tableElement);
             {
                 const tableHeader = document.createElement("tr");
-                for (const el of ["Nom du quizz", "Nom de l'utilisateur", "Date", "Heure", "Réponses"]) {
+                for (const el of ["Quizz", "Joueur", "Date", "Heure", "Réponses"]) {
                     const element = document.createElement("th");
                     element.innerText = el;
                     tableHeader.appendChild(element)
