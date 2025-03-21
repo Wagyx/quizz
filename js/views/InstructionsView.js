@@ -1,11 +1,13 @@
-import { loadLocalJson } from "../utils.js"
+import { loadLocalJson, sanitize } from "../utils.js"
 
 function questionToHtmlString(quizzData) {
+  const maxPoints = quizzData.questions.map((x) => parseInt(sanitize("" + x.points), 10)).reduce((x, s) => x + s, 0);
   return `<u>Infos du quizz</u></br>
   Nom : ${quizzData.quizzName}</br>
   Date : ${quizzData.date}</br>
   Heure : ${quizzData.time}</br>
-  Nombre de questions : ${quizzData.questions.length}`;
+  Questions : ${quizzData.questions.length}</br>
+  Points : ${maxPoints}`;
 }
 
 /**

@@ -99,8 +99,8 @@ export class QuizzCorrector {
         Nom : ${this.quizzData.quizzName}</br>
         Date : ${this.quizzData.date}</br>
         Heure : ${this.quizzData.time}</br>
-        Nombre de questions : ${this.quizzData.questions.length}</br>
-        Nombre de points : ${maxPoints}`;
+        Questions : ${this.quizzData.questions.length}</br>
+        Points : ${maxPoints}`;
     }
 
     showLoadPage() {
