@@ -34,7 +34,7 @@ export class Quizz {
     fetchJson(filename, (data) => {
       this.quizzData = data;
       this.quizzData.date = sanitize(this.quizzData.date);
-      this.quizzData.time = sanitize(this.quizzData.date);
+      this.quizzData.time = sanitize(this.quizzData.time);
       this.quizzData.creator = sanitize(this.quizzData.creator);
       this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
       this.answers = new Array(this.quizzData.questions.length).fill("");
@@ -56,7 +56,7 @@ export class Quizz {
       (data) => {
         this.quizzData = data;
         this.quizzData.date = sanitize(this.quizzData.date);
-        this.quizzData.time = sanitize(this.quizzData.date);
+        this.quizzData.time = sanitize(this.quizzData.time);
         this.quizzData.creator = sanitize(this.quizzData.creator);
         this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
         this.answers = new Array(this.quizzData.questions.length).fill("");

@@ -31,7 +31,7 @@ export class QuizzCorrector {
         fetchJson(filename, (data) => {
             this.quizzData = data;
             this.quizzData.date = sanitize(this.quizzData.date);
-            this.quizzData.time = sanitize(this.quizzData.date);
+            this.quizzData.time = sanitize(this.quizzData.time);
             this.quizzData.creator = sanitize(this.quizzData.creator);
             this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
             this.showLoadPage();
@@ -45,7 +45,7 @@ export class QuizzCorrector {
         fetchJson(filename, (data) => {
             const userData = data;
             userData.date = sanitize(userData.date);
-            userData.time = sanitize(userData.date);
+            userData.time = sanitize(userData.time);
             userData.userName = sanitize(userData.userName);
             userData.quizzName = sanitize(userData.quizzName);
             for (let i = 0, l = userData.answers.length; i < l; ++i) {
@@ -66,7 +66,7 @@ export class QuizzCorrector {
         loadLocalJson(file, (data) => {
             this.quizzData = data;
             this.quizzData.date = sanitize(this.quizzData.date);
-            this.quizzData.time = sanitize(this.quizzData.date);
+            this.quizzData.time = sanitize(this.quizzData.time);
             this.quizzData.creator = sanitize(this.quizzData.creator);
             this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
             onload();
@@ -80,7 +80,7 @@ export class QuizzCorrector {
     async loadAnswersFromFile(file, onload) {
         loadLocalJson(file, (userData) => {
             userData.date = sanitize(userData.date);
-            userData.time = sanitize(userData.date);
+            userData.time = sanitize(userData.time);
             userData.userName = sanitize(userData.userName);
             userData.quizzName = sanitize(userData.quizzName);
             for (let i = 0, l = userData.answers.length; i < l; ++i) {
