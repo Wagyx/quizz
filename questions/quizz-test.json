@@ -5,18 +5,56 @@
     "time": "19:45:11",
     "questions": [
         {
+            "category": "Musique",
+            "description": "Qui chante cette chanson ?",
+            "question_type": "video",
+            "link": "https://www.youtube.com/embed/nsCIeklgp1M",
+            "answer_type": "single",
+            "answer": "Rick Astley",
+            "points":1
+        },
+        {
+            "category": "Musique",
+            "description": "Qui chante cette chanson ?",
+            "question_type": "video",
+            "link": "data/test.mp4",
+            "answer_type": "single",
+            "answer": "Rick Astley",
+            "points":1
+        },
+        {
+            "category": "Musique",
+            "description": "Qui chante cette chanson ?",
+            "question_type": "audio",
+            "link": "https://www.youtube.com/embed/nsCIeklgp1M",
+            "answer_type": "single",
+            "answer": "Rick Astley",
+            "points":1
+        },
+        {
+            "category": "Musique",
+            "description": "Qui chante cette chanson ?",
+            "question_type": "audio",
+            "link": "data/test.mp3",
+            "answer_type": "single",
+            "answer": "Rick Astley",
+            "points":2
+        },
+        {
             "category": "Art",
             "description": "Qui a peint la Mona Lisa ?",
             "question_type": "texte",
             "answer_type": "single",
-            "answer": "Léonard de Vinci"
+            "answer": "Léonard de Vinci",
+            "points":1
         },
         {
             "category": "Art",
             "description": "Dans quelle ville se situe le musée du Quai Branly ?",
             "question_type": "texte",
             "answer_type": "single",
-            "answer": "Paris"
+            "answer": "Paris",
+            "points":3
         }
    ]
 }

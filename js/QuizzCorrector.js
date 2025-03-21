@@ -1,5 +1,5 @@
 import { CorrectionView } from "./views/CorrectionView.js";
-import { fetchJson, loadLocalJson } from "./utils.js"
+import { fetchJson, loadLocalJson, sanitize } from "./utils.js"
 
 export class QuizzCorrector {
 
@@ -8,6 +8,12 @@ export class QuizzCorrector {
         this.quizzData = {};
         this.usersAnswers = [];
         this.currentIndex = 0;
+
+        //initialize YT Youtube
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         this.loadInitialQuestions("questions/quizz-test.json");
         this.loadInitialAnswers("questions/answers-test.json")
@@ -24,6 +30,10 @@ export class QuizzCorrector {
     async loadInitialQuestions(filename) {
         fetchJson(filename, (data) => {
             this.quizzData = data;
+            this.quizzData.date = sanitize(this.quizzData.date);
+            this.quizzData.time = sanitize(this.quizzData.date);
+            this.quizzData.creator = sanitize(this.quizzData.creator);
+            this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
             this.showLoadPage();
         })
     }
@@ -34,8 +44,15 @@ export class QuizzCorrector {
     async loadInitialAnswers(filename) {
         fetchJson(filename, (data) => {
             const userData = data;
-            userData["id"] = this.usersAnswers.length;
-            userData["points"] = new Array(userData.answers.length).fill(0);
+            userData.date = sanitize(userData.date);
+            userData.time = sanitize(userData.date);
+            userData.userName = sanitize(userData.userName);
+            userData.quizzName = sanitize(userData.quizzName);
+            for (let i = 0, l = userData.answers.length; i < l; ++i) {
+                userData.answers[i] = sanitize(userData.answers[i]);
+            }
+            userData.id = this.usersAnswers.length;
+            userData.points = new Array(userData.answers.length).fill(0);
             this.usersAnswers.push(userData);
             this.showLoadPage();
         })
@@ -48,6 +65,10 @@ export class QuizzCorrector {
     async loadQuestionsFromFile(file, onload) {
         loadLocalJson(file, (data) => {
             this.quizzData = data;
+            this.quizzData.date = sanitize(this.quizzData.date);
+            this.quizzData.time = sanitize(this.quizzData.date);
+            this.quizzData.creator = sanitize(this.quizzData.creator);
+            this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
             onload();
         });
     }
@@ -58,19 +79,28 @@ export class QuizzCorrector {
    */
     async loadAnswersFromFile(file, onload) {
         loadLocalJson(file, (userData) => {
-            userData["id"] = this.usersAnswers.length;
-            userData["points"] = new Array(userData.answers.length).fill(0);
+            userData.date = sanitize(userData.date);
+            userData.time = sanitize(userData.date);
+            userData.userName = sanitize(userData.userName);
+            userData.quizzName = sanitize(userData.quizzName);
+            for (let i = 0, l = userData.answers.length; i < l; ++i) {
+                userData.answers[i] = sanitize(userData.answers[i]);
+            }
+            userData.id = this.usersAnswers.length;
+            userData.points = new Array(userData.answers.length).fill(0);
             this.usersAnswers.push(userData);
             onload();
         });
     }
 
     questionToHtmlString() {
+        const maxPoints = this.quizzData.questions.map((x) => parseInt(sanitize("" + x.points), 10)).reduce((x, s) => x + s, 0);
         return `<u>Infos du quizz</u></br>
         Nom : ${this.quizzData.quizzName}</br>
         Date : ${this.quizzData.date}</br>
         Heure : ${this.quizzData.time}</br>
-        Nombre de questions : ${this.quizzData.questions.length}`;
+        Nombre de questions : ${this.quizzData.questions.length}</br>
+        Nombre de points : ${maxPoints}`;
     }
 
     showLoadPage() {
@@ -94,7 +124,7 @@ export class QuizzCorrector {
         answersElement.innerHTML = `<u>Réponses chargées (${this.usersAnswers.length})</u>`;
         containerDiv.appendChild(answersElement);
 
-        if (this.usersAnswers.length>0) {
+        if (this.usersAnswers.length > 0) {
 
             const tableElement = document.createElement("table");
             tableElement.className = "center";
@@ -237,7 +267,7 @@ export class QuizzCorrector {
 
         {
             const descElement = document.createElement("p");
-            descElement.innerHTML = "☆*:.｡. o(≧▽≦)o .｡.:*☆";
+            descElement.innerText = "☆*:.｡. o(≧▽≦)o .｡.:*☆";
             questionDiv.appendChild(descElement);
         }
 
@@ -254,11 +284,20 @@ export class QuizzCorrector {
             tableElement.appendChild(tableHeader);
         }
 
+        const maxPoints = this.quizzData.questions.map((x) => parseInt(sanitize("" + x.points), 10)).reduce((x, s) => x + s, 0);
+
+        const results = [];
         for (let name in this.usersAnswers) {
-            const a = this.usersAnswers[name];
+            const userAnswer = this.usersAnswers[name];
+            const totalPoints = userAnswer.points.reduce((x, s) => x + s, 0);
+            results.push({ name: userAnswer.userName, points: totalPoints });
+        }
+        results.sort((a, b) => a.points - b.points);
+        results.reverse();
+
+        for (let result of results) {
             const tableRow = document.createElement("tr");
-            const totalPoints = a.points.reduce((x, s) => x + s, 0);
-            for (const el of [a.userName, `${totalPoints}/${this.quizzData.questions.length}`]) {
+            for (const el of [result.name, `${result.points}/${maxPoints}`]) {
                 const element = document.createElement("td");
                 element.innerText = el;
                 tableRow.appendChild(element)
@@ -268,7 +307,7 @@ export class QuizzCorrector {
 
         // {
         //   const descElement = document.createElement("p");
-        //   descElement.innerHTML = "et pour le gagnant Champagne ! (*^^)o∀*∀o(^^*)♪";
+        //   descElement.innerText = "et pour le gagnant Champagne ! (*^^)o∀*∀o(^^*)♪";
         //   questionDiv.appendChild(descElement);
         // }
 

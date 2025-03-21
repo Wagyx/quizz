@@ -1,7 +1,7 @@
 import { InstructionsView } from "./views/InstructionsView.js";
 import { QuestionView } from "./views/QuestionView.js";
 import { EndingView } from "./views/EndingView.js";
-import { fetchJson } from "./utils.js"
+import { fetchJson, sanitize } from "./utils.js"
 
 /**
  * Classe principale gérant le quizz
@@ -18,23 +18,25 @@ export class Quizz {
     this.container = container;
     this.currentView = null;
 
-
-    //initialize YT
+    //initialize YT Youtube
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     this.loadInitialQuestions(defaultFilename);
-    
   }
 
   /**
    * Charge les questions initiales depuis un fichier JSON
    */
   async loadInitialQuestions(filename) {
-    fetchJson(filename,(data)=>{
+    fetchJson(filename, (data) => {
       this.quizzData = data;
+      this.quizzData.date = sanitize(this.quizzData.date);
+      this.quizzData.time = sanitize(this.quizzData.date);
+      this.quizzData.creator = sanitize(this.quizzData.creator);
+      this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
       this.answers = new Array(this.quizzData.questions.length).fill("");
       this.showInstructions();
     })
@@ -53,9 +55,13 @@ export class Quizz {
       () => this.next(),
       (data) => {
         this.quizzData = data;
+        this.quizzData.date = sanitize(this.quizzData.date);
+        this.quizzData.time = sanitize(this.quizzData.date);
+        this.quizzData.creator = sanitize(this.quizzData.creator);
+        this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
         this.answers = new Array(this.quizzData.questions.length).fill("");
       },
-      (userName) => {this.userName = userName;}
+      (userName) => { this.userName = userName; }
     );
 
     this.currentView.render();
@@ -71,11 +77,11 @@ export class Quizz {
     const currentdate = new Date();
 
     const answerData = {
-      "quizzName":this.quizzData.quizzName,
-      "userName" : this.userName,
-      "date":`${currentdate.getDate()}/${currentdate.getMonth()+1}/${currentdate.getFullYear()}`,
-      "time":`${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`,
-      "answers":this.answers,
+      "quizzName": this.quizzData.quizzName,
+      "userName": this.userName,
+      "date": `${currentdate.getDate()}/${currentdate.getMonth() + 1}/${currentdate.getFullYear()}`,
+      "time": `${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`,
+      "answers": this.answers,
     }
     this.currentView = new EndingView(this.container, answerData, () => {
       this.currentIndex = -2;

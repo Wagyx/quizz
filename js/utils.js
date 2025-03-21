@@ -59,3 +59,16 @@ export async function loadLocalJson(file, onload) {
   }
 }
 
+export function sanitize(string) {
+  const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      // "'": '&#x27;',
+      // "/": '&#x2F;',
+  };
+  // const reg = /[&<>"'/]/ig;
+  const reg = /[&<>"]/ig;
+  return string.replace(reg, (match)=>(map[match]));
+}

@@ -96,7 +96,7 @@ table, th, td {
     border: 0px solid;
   }
 td>button {
-    width:100%;
+    width:30px;
     margin:0px;
   }
 button.validAnswer{

@@ -28,7 +28,6 @@ export class CorrectionView {
   ) {
     this.container = container;
     this.question = question;
-    this.questionPoints = 1;
     this.index = index;
     this.total = total;
     this.usersAnswer = usersAnswer;
@@ -36,7 +35,7 @@ export class CorrectionView {
     this.onNext = onNext;
 
     this.questionRenderer = new QuestionRenderer();
-    this.correctionHandler = new CorrectionHandler(this.questionPoints, onChange);
+    this.correctionHandler = new CorrectionHandler(this.question.points, onChange);
   }
 
   /**

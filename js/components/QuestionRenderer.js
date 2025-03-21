@@ -138,7 +138,9 @@ export class QuestionRenderer {
             event.target.mute();
             event.target.setVolume(100);
           },
-          'onStateChange': onPlayerStateChange,
+          'onStateChange': (event) => {
+            console.log("YT player state", event.data)
+          },
           // "onError": () => { }
         }
       });

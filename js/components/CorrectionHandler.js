@@ -34,7 +34,7 @@ export class CorrectionHandler{
     const tableElement = document.createElement("table");
     tableElement.className = "center";
     container.appendChild(tableElement);
-    const tableHeader = createRow(["Réponse: ", answer], "th");
+    const tableHeader = createRow(["Réponse: ", answer, `Points (${this.points})`], "th");
     tableElement.appendChild(tableHeader);
 
     for (const u of usersAnswer){
@@ -42,23 +42,28 @@ export class CorrectionHandler{
       const userElement = document.createElement("td");
       userElement.innerText = u.name;
       trElement.appendChild(userElement)
+
+      const ansElement = document.createElement("td");
+      ansElement.innerText = u.answer;
+      trElement.appendChild(ansElement)
       
-      const answerElement = document.createElement("td");
-      trElement.appendChild(answerElement)
-      const button = document.createElement("button");
-      answerElement.appendChild(button);
-      button.className = u.point > 0 ? "validAnswer" : "nonValidAnswer";
-      button.innerText = u.answer;
-      button.onclick = () => {
-        if (button.className == "nonValidAnswer"){
+      const pointsElement = document.createElement("td");
+      trElement.appendChild(pointsElement)
+      const buttons = [];
+      for (let pt=0; pt<=this.points; ++pt){
+        const button = document.createElement("button");
+        button.className = u.point == pt ? "validAnswer" : "nonValidAnswer";
+        button.innerText = pt;
+        button.onclick = () => {
+          for (let b of buttons){
+            b.className = "nonValidAnswer";
+          }
           button.className = "validAnswer";
-          this.onChange(u.id, this.points);
-        }
-        else {
-          button.className = "nonValidAnswer";
-          this.onChange(u.id, 0);
-        }
-      };
+          this.onChange(u.id, pt);
+        };
+        pointsElement.appendChild(button);
+        buttons.push(button)
+      }
       tableElement.appendChild(trElement);
 
 
