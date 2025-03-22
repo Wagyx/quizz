@@ -75,7 +75,7 @@ export class QuestionRenderer {
           },
           "onError": () => {
             hasError = true;
-            playInfoELement.innerText = "Error : Could not load the video";
+            playInfoELement.textContent = "Error : Could not load the video";
           }
         }
       });
@@ -83,16 +83,16 @@ export class QuestionRenderer {
       parent.onmouseover = () => {
         if (player && player.unMute && player.isMuted() && !hasError) {
           player.unMute();
-          playInfoELement.innerText = "Playing ...";
+          playInfoELement.textContent = "Playing ...";
         }
       }
     } else {
       const audioElement = document.createElement("audio");
       audioElement.onplay = () => {
-        playInfoELement.innerText = "Playing ...";
+        playInfoELement.textContent = "Playing ...";
       }
       audioElement.onerror = () => {
-        playInfoELement.innerText = "Error : Could not load the video";
+        playInfoELement.textContent = "Error : Could not load the video";
       }
       audioElement.src = question.link;
       audioElement.autoplay = true;
@@ -147,7 +147,7 @@ export class QuestionRenderer {
 
       const playInfoELement = document.createElement("p");
       divElement.appendChild(playInfoELement);
-      playInfoELement.innerText = "Click here to get sound"
+      playInfoELement.textContent = "Click here to get sound"
 
       parent.onmouseover = () => {
         if (player && player.unMute && player.isMuted()) {

@@ -112,7 +112,7 @@ export class QuizzCorrector {
                 const tableHeader = document.createElement("tr");
                 for (const el of ["Quizz", "Joueur", "Date", "Heure", "Réponses"]) {
                     const element = document.createElement("th");
-                    element.innerText = el;
+                    element.textContent = el;
                     tableHeader.appendChild(element)
                 }
                 tableElement.appendChild(tableHeader);
@@ -122,7 +122,7 @@ export class QuizzCorrector {
                 const tableRow = document.createElement("tr");
                 for (const el of [userData.quizzName, userData.userName, userData.date, userData.time, userData.answers.length]) {
                     const element = document.createElement("td");
-                    element.innerText = el;
+                    element.textContent = el;
                     tableRow.appendChild(element)
                 }
                 tableElement.appendChild(tableRow);
@@ -246,7 +246,7 @@ export class QuizzCorrector {
 
         {
             const descElement = document.createElement("p");
-            descElement.innerText = "☆*:.｡. o(≧▽≦)o .｡.:*☆";
+            descElement.textContent = "☆*:.｡. o(≧▽≦)o .｡.:*☆";
             questionDiv.appendChild(descElement);
         }
 
@@ -257,7 +257,7 @@ export class QuizzCorrector {
             const tableHeader = document.createElement("tr");
             for (const el of ["Nom", "Points"]) {
                 const element = document.createElement("th");
-                element.innerText = el;
+                element.textContent = el;
                 tableHeader.appendChild(element)
             }
             tableElement.appendChild(tableHeader);
@@ -278,7 +278,7 @@ export class QuizzCorrector {
             const tableRow = document.createElement("tr");
             for (const el of [result.name, `${result.points}/${maxPoints}`]) {
                 const element = document.createElement("td");
-                element.innerText = el;
+                element.textContent = el;
                 tableRow.appendChild(element)
             }
             tableElement.appendChild(tableRow);
@@ -286,13 +286,13 @@ export class QuizzCorrector {
 
         // {
         //   const descElement = document.createElement("p");
-        //   descElement.innerText = "et pour le gagnant Champagne ! (*^^)o∀*∀o(^^*)♪";
+        //   descElement.textContent = "et pour le gagnant Champagne ! (*^^)o∀*∀o(^^*)♪";
         //   questionDiv.appendChild(descElement);
         // }
 
 
         const prevButton = document.createElement("button");
-        prevButton.innerText = "Previous";
+        prevButton.textContent = "Previous";
         questionDiv.appendChild(prevButton);
         prevButton.onclick = () => { this.previous() };
     }

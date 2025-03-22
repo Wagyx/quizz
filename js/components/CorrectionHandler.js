@@ -4,7 +4,7 @@ function createRow(array, tag) {
   const trElement = document.createElement("tr");
   for (const el of array){
     const element = document.createElement(tag);
-    element.innerText = el;
+    element.textContent = el;
     trElement.appendChild(element)
   }
   return trElement;
@@ -40,11 +40,11 @@ export class CorrectionHandler{
     for (const u of usersAnswer){
       const trElement = document.createElement("tr");
       const userElement = document.createElement("td");
-      userElement.innerText = u.name;
+      userElement.textContent = u.name;
       trElement.appendChild(userElement)
 
       const ansElement = document.createElement("td");
-      ansElement.innerText = u.answer;
+      ansElement.textContent = u.answer;
       trElement.appendChild(ansElement)
       
       const pointsElement = document.createElement("td");
@@ -53,7 +53,7 @@ export class CorrectionHandler{
       for (let pt=0; pt<=this.points; ++pt){
         const button = document.createElement("button");
         button.className = u.point == pt ? "validAnswer" : "nonValidAnswer";
-        button.innerText = pt;
+        button.textContent = pt;
         button.onclick = () => {
           for (let b of buttons){
             b.className = "nonValidAnswer";

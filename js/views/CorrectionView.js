@@ -66,11 +66,11 @@ export class CorrectionView {
     this.correctionHandler.renderInterface( questionDiv, this.usersAnswer, this.question.answer );
 
     const prevButton = document.createElement("button");
-    prevButton.innerText = "Previous";
+    prevButton.textContent = "Previous";
     questionDiv.appendChild(prevButton);
     prevButton.onclick = ()=>{this.onPrevious()};
     const nextButton = document.createElement("button");
-    nextButton.innerText = "Next";
+    nextButton.textContent = "Next";
     questionDiv.appendChild(nextButton);
     nextButton.onclick = ()=>{this.onNext()};
 
