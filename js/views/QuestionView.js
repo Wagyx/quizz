@@ -29,11 +29,10 @@ export class QuestionView {
     this.index = index;
     this.total = total;
     this.currentAnswer = currentAnswer;
-    this.timePerQuestion = 30000; //TODO set the timerPerQuestion in the question
 
     this.questionRenderer = new QuestionRenderer();
     this.answerHandler = new AnswerHandler(onAnswerChanged);
-    this.timer = new Timer(this.timePerQuestion, onTimeUp);
+    this.timer = new Timer(this.question.time * 1000, onTimeUp);
   }
 
   /**
@@ -52,9 +51,8 @@ export class QuestionView {
 
     // Affichage de la description
     const descElement = document.createElement("p");
-    descElement.textContent = `Question ${this.index + 1}/${this.total} : ${
-      this.question.description
-    }`;
+    descElement.innerHTML = `Question ${this.index + 1}/${this.total} : ${this.question.points} points </br>
+    ${this.question.description}`;
     questionDiv.appendChild(descElement);
 
     // Rendu de la question (audio, vidéo, image ou texte)

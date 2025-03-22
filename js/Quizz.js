@@ -1,7 +1,8 @@
 import { InstructionsView } from "./views/InstructionsView.js";
 import { QuestionView } from "./views/QuestionView.js";
 import { EndingView } from "./views/EndingView.js";
-import { fetchJson, sanitize } from "./utils.js"
+import { fetchJson, sanitizeQuizzData } from "./utils.js"
+
 
 /**
  * Classe principale gérant le quizz
@@ -32,11 +33,7 @@ export class Quizz {
    */
   async loadInitialQuestions(filename) {
     fetchJson(filename, (data) => {
-      this.quizzData = data;
-      this.quizzData.date = sanitize(this.quizzData.date);
-      this.quizzData.time = sanitize(this.quizzData.time);
-      this.quizzData.creator = sanitize(this.quizzData.creator);
-      this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
+      this.quizzData = sanitizeQuizzData(data);
       this.answers = new Array(this.quizzData.questions.length).fill("");
       this.showInstructions();
     })
@@ -54,11 +51,7 @@ export class Quizz {
       this.container,
       () => this.next(),
       (data) => {
-        this.quizzData = data;
-        this.quizzData.date = sanitize(this.quizzData.date);
-        this.quizzData.time = sanitize(this.quizzData.time);
-        this.quizzData.creator = sanitize(this.quizzData.creator);
-        this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
+        this.quizzData = sanitizeQuizzData(data);
         this.answers = new Array(this.quizzData.questions.length).fill("");
       },
       (userName) => { this.userName = userName; }
@@ -66,6 +59,8 @@ export class Quizz {
 
     this.currentView.render();
   }
+
+  
 
   /**
    * Affiche l'écran de fin du quizz

@@ -1,5 +1,5 @@
 import { CorrectionView } from "./views/CorrectionView.js";
-import { fetchJson, loadLocalJson, sanitize } from "./utils.js"
+import { fetchJson, loadLocalJson, sanitizeQuizzData, sanitizeAnswerData } from "./utils.js"
 
 export class QuizzCorrector {
 
@@ -29,11 +29,7 @@ export class QuizzCorrector {
      */
     async loadInitialQuestions(filename) {
         fetchJson(filename, (data) => {
-            this.quizzData = data;
-            this.quizzData.date = sanitize(this.quizzData.date);
-            this.quizzData.time = sanitize(this.quizzData.time);
-            this.quizzData.creator = sanitize(this.quizzData.creator);
-            this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
+            this.quizzData = sanitizeQuizzData(data);
             this.showLoadPage();
         })
     }
@@ -43,14 +39,7 @@ export class QuizzCorrector {
     */
     async loadInitialAnswers(filename) {
         fetchJson(filename, (data) => {
-            const userData = data;
-            userData.date = sanitize(userData.date);
-            userData.time = sanitize(userData.time);
-            userData.userName = sanitize(userData.userName);
-            userData.quizzName = sanitize(userData.quizzName);
-            for (let i = 0, l = userData.answers.length; i < l; ++i) {
-                userData.answers[i] = sanitize(userData.answers[i]);
-            }
+            const userData = sanitizeAnswerData(data);
             userData.id = this.usersAnswers.length;
             userData.points = new Array(userData.answers.length).fill(0);
             this.usersAnswers.push(userData);
@@ -64,11 +53,7 @@ export class QuizzCorrector {
      */
     async loadQuestionsFromFile(file, onload) {
         loadLocalJson(file, (data) => {
-            this.quizzData = data;
-            this.quizzData.date = sanitize(this.quizzData.date);
-            this.quizzData.time = sanitize(this.quizzData.time);
-            this.quizzData.creator = sanitize(this.quizzData.creator);
-            this.quizzData.quizzName = sanitize(this.quizzData.quizzName);
+            this.quizzData = sanitizeQuizzData(data);
             onload();
         });
     }
@@ -78,14 +63,8 @@ export class QuizzCorrector {
    * @param {File} file - Fichier JSON contenant les questions
    */
     async loadAnswersFromFile(file, onload) {
-        loadLocalJson(file, (userData) => {
-            userData.date = sanitize(userData.date);
-            userData.time = sanitize(userData.time);
-            userData.userName = sanitize(userData.userName);
-            userData.quizzName = sanitize(userData.quizzName);
-            for (let i = 0, l = userData.answers.length; i < l; ++i) {
-                userData.answers[i] = sanitize(userData.answers[i]);
-            }
+        loadLocalJson(file, (data) => {
+            const userData = sanitizeAnswerData(data);
             userData.id = this.usersAnswers.length;
             userData.points = new Array(userData.answers.length).fill(0);
             this.usersAnswers.push(userData);
@@ -94,7 +73,7 @@ export class QuizzCorrector {
     }
 
     questionToHtmlString() {
-        const maxPoints = this.quizzData.questions.map((x) => parseInt(sanitize("" + x.points), 10)).reduce((x, s) => x + s, 0);
+        const maxPoints = this.quizzData.questions.map((x) => x.points).reduce((x, s) => x + s, 0);
         return `<u>Infos du quizz</u></br>
         Nom : ${this.quizzData.quizzName}</br>
         Date : ${this.quizzData.date}</br>
@@ -284,7 +263,7 @@ export class QuizzCorrector {
             tableElement.appendChild(tableHeader);
         }
 
-        const maxPoints = this.quizzData.questions.map((x) => parseInt(sanitize("" + x.points), 10)).reduce((x, s) => x + s, 0);
+        const maxPoints = this.quizzData.questions.map((x) => x.points).reduce((x, s) => x + s, 0);
 
         const results = [];
         for (let name in this.usersAnswers) {

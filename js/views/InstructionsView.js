@@ -1,13 +1,19 @@
-import { loadLocalJson, sanitize } from "../utils.js"
+import { loadLocalJson, secondsToHMS } from "../utils.js"
+
+
 
 function questionToHtmlString(quizzData) {
-  const maxPoints = quizzData.questions.map((x) => parseInt(sanitize("" + x.points), 10)).reduce((x, s) => x + s, 0);
+  const maxPoints = quizzData.questions.map((x) => x.points).reduce((x, s) => x + s, 0);
+  const duration = quizzData.questions.map((x) => x.time).reduce((x, s) => x + s, 0);
+  const hms = secondsToHMS(duration);
   return `<u>Infos du quizz</u></br>
   Nom : ${quizzData.quizzName}</br>
   Date : ${quizzData.date}</br>
   Heure : ${quizzData.time}</br>
   Questions : ${quizzData.questions.length}</br>
-  Points : ${maxPoints}`;
+  Points : ${maxPoints}</br>
+  Durée : ${hms.hours}h${hms.minutes}min${hms.seconds}s`;
+
 }
 
 /**
@@ -86,6 +92,7 @@ export class InstructionsView {
       inputElement.accept = "application/json";
       
       const questElement = document.createElement("p");
+      questElement.innerHTML = "Pas de quizz chargé"
       questionDiv.appendChild(questElement);
 
       inputElement.addEventListener("change", () => {
