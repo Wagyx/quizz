@@ -7,9 +7,9 @@ export class Timer {
    * @param {Function} onTimeUp - Fonction à appeler quand le temps est écoulé
    */
   constructor(timePerQuestion, onTimeUp) {
-    this.timePerQuestion = timePerQuestion;
-    this.decrementTime = 100;
-    this.remainingTime = timePerQuestion;
+    this.timePerQuestion = timePerQuestion; //milliseconds
+    this.decrementTime = 100; //milliseconds
+    this.startTime = new Date();
     this.interval = null;
     this.onTimeUp = onTimeUp;
     this.timeElement = null;
@@ -21,9 +21,9 @@ export class Timer {
    */
   appendTimerToContainer(container) {
     this.timeElement = document.createElement("p");
-    this.timeElement.textContent = `Temps restant: ${(
-      this.remainingTime / 1000.0
-    ).toFixed(1)}s`;
+    const now = new Date();
+    const remainingTime = this.timePerQuestion - (now - this.startTime);
+    this.timeElement.textContent = `Temps restant: ${(remainingTime / 1000).toFixed(0)}s`;
     container.appendChild(this.timeElement);
   }
 
@@ -34,17 +34,16 @@ export class Timer {
     this.reset();
 
     this.interval = setInterval(() => {
-      this.remainingTime -= this.decrementTime;
+      const now = new Date();
+      const remainingTime = this.timePerQuestion - (now - this.startTime);
 
-      if (this.remainingTime < 0) {
+      if (remainingTime < 0) {
         this.stop();
         if (this.onTimeUp) {
           this.onTimeUp();
         }
       } else if (this.timeElement) {
-        this.timeElement.textContent = `Temps restant: ${(
-          this.remainingTime / 1000.0
-        ).toFixed(1)}s`;
+        this.timeElement.textContent = `Temps restant: ${(remainingTime / 1000).toFixed(0)}s`;
       }
     }, this.decrementTime);
   }
@@ -64,6 +63,6 @@ export class Timer {
    */
   reset() {
     this.stop();
-    this.remainingTime = this.timePerQuestion;
+    this.startTime = new Date();
   }
 }
