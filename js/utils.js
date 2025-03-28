@@ -85,7 +85,9 @@ export function sanitizeQuizzData(data){
     question.description = sanitize(question.description);
     question.question_type = sanitize(question.question_type);
     question.answer_type = sanitize(question.answer_type);
-    question.answer = sanitize(question.answer);
+    if (question.answer_type){
+      question.answer = sanitize(question.answer);
+    }
     question.points = isNumber(question.points) ? question.points : 0;
     question.time = isNumber(question.time) ? question.time : 0;
   }
