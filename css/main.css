@@ -1,3 +1,17 @@
+:root {
+  /* --bulma-primary:hsl(104, 100%, 41%); */
+  /* --bulma-primary-h: 171deg; */
+  --bulma-primary-h: 104deg;
+  --bulma-primary-s: 100%;
+  --bulma-primary-l: 41%;
+
+  /* --bulma-breadcrumb-item-color: hsl(var(--bulma-primary-h), var(--bulma-primary-s), var(--bulma-primary-l));
+  --bulma-breadcrumb-item-hover-color: hsl(var(--bulma-primary-h), var(--bulma-primary-s), var(--bulma-primary-50-l));
+  --bulma-breadcrumb-item-active-color: hsl(var(--bulma-primary-h), var(--bulma-primary-s), var(--bulma-primary-30-l));
+  --bulma-breadcrumb-item-separator-color: var(--bulma-border); */
+
+}
+
 .image img {
     width: auto;
     height: 400px;
