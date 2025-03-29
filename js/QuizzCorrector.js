@@ -1,5 +1,5 @@
 import { CorrectionView } from "./views/CorrectionView.js";
-import { fetchJson, loadLocalJson, sanitizeQuizzData, sanitizeAnswerData } from "./utils.js"
+import { fetchJson, loadLocalJson, sanitizeQuizzData, sanitizeAnswerData, createLoadFileButton } from "./utils.js"
 
 export class QuizzCorrector {
 
@@ -74,7 +74,7 @@ export class QuizzCorrector {
 
     questionToHtmlString() {
         const maxPoints = this.quizzData.questions.map((x) => x.points).reduce((x, s) => x + s, 0);
-        return `<u>Infos du quizz</u></br>
+        return `<strong>Infos du quizz</strong></br>
         Nom : ${this.quizzData.quizzName}</br>
         Date : ${this.quizzData.date}</br>
         Heure : ${this.quizzData.time}</br>
@@ -82,113 +82,105 @@ export class QuizzCorrector {
         Points : ${maxPoints}`;
     }
 
+    _upDateTableBody(tableElement) {
+        let tbody = tableElement.querySelector("tbody");
+        if (tbody) {
+            tbody.remove()
+        }
+        tbody = document.createElement("tbody");
+        tableElement.appendChild(tbody);
+        for (let userData of this.usersAnswers) {
+            const tableRow = document.createElement("tr");
+            for (const el of [userData.quizzName, userData.userName, userData.date, userData.time, userData.answers.length]) {
+                const element = document.createElement("td");
+                element.textContent = el;
+                tableRow.appendChild(element)
+            }
+            tbody.appendChild(tableRow);
+        }
+    }
+    
     showLoadPage() {
         if (this.container.firstElementChild) {
             this.container.removeChild(this.container.firstElementChild);
         }
         const containerDiv = document.createElement("div");
+        containerDiv.className = "content is-medium has-text-centered"
         this.container.appendChild(containerDiv);
-
+        
+        
         const titleElement = document.createElement("h3");
+        titleElement.className = "title is-3";
         titleElement.textContent = "Correction";
         containerDiv.appendChild(titleElement);
-
-
-        const questElement = document.createElement("p");
-        questElement.innerHTML = this.questionToHtmlString();
-        containerDiv.appendChild(questElement);
-
-
-        const answersElement = document.createElement("p");
-        answersElement.innerHTML = `<u>Réponses chargées (${this.usersAnswers.length})</u>`;
-        containerDiv.appendChild(answersElement);
-
-        if (this.usersAnswers.length > 0) {
-
-            const tableElement = document.createElement("table");
-            tableElement.className = "center";
-            containerDiv.appendChild(tableElement);
-            {
-                const tableHeader = document.createElement("tr");
-                for (const el of ["Quizz", "Joueur", "Date", "Heure", "Réponses"]) {
-                    const element = document.createElement("th");
-                    element.textContent = el;
-                    tableHeader.appendChild(element)
-                }
-                tableElement.appendChild(tableHeader);
-            }
-
-            for (let userData of this.usersAnswers) {
-                const tableRow = document.createElement("tr");
-                for (const el of [userData.quizzName, userData.userName, userData.date, userData.time, userData.answers.length]) {
-                    const element = document.createElement("td");
-                    element.textContent = el;
-                    tableRow.appendChild(element)
-                }
-                tableElement.appendChild(tableRow);
-            }
-        }
-
-
-
+        
         // Bouton pour charger des questions
         {
-            const fileBtnElement = document.createElement("button");
+            const fileBtnElement = createLoadFileButton("Charger les questions", "questions-upload");
             containerDiv.appendChild(fileBtnElement);
-
-            const labelElement = document.createElement("label");
-            labelElement.htmlFor = "questions-upload";
-            labelElement.textContent = "Charger les questions";
-            fileBtnElement.appendChild(labelElement);
-
-            fileBtnElement.onclick = () => {
-                labelElement.click();
-            };
-
-            const inputElement = document.createElement("input");
-            containerDiv.appendChild(inputElement);
-            inputElement.type = "file";
-            inputElement.id = "questions-upload";
-            inputElement.accept = "application/json";
-
+            
+            const inputElement = fileBtnElement.querySelector("input[type=file]")
+            inputElement.accept = "application/json"
+            
+            const questElement = document.createElement("p");
+            if (this.quizzData){
+                questElement.innerHTML = this.questionToHtmlString();
+            }
+            containerDiv.appendChild(questElement);
+            
+            // const filenNameElement = fileBtnElement.querySelector(".file-name")
             inputElement.addEventListener("change", () => {
                 if (inputElement.files.length == 1) {
+                    const fileName = fileBtnElement.querySelector(".file-name");
+                    console.log(fileName)
+                    fileName.textContent = inputElement.files[0].name;
                     this.loadQuestionsFromFile(inputElement.files[0], () => {
-                        this.showLoadPage();
+                        questElement.innerHTML = this.questionToHtmlString();
                     });
                 }
             });
         }
-
+        
         {
-            const fileBtnElement = document.createElement("button");
+            const fileBtnElement = createLoadFileButton("Charger les réponses", "answers-upload", false);
             containerDiv.appendChild(fileBtnElement);
-
-            const labelElement = document.createElement("label");
-            labelElement.htmlFor = "answers-upload";
-            labelElement.textContent = "Charger les réponses des joueurs";
-            fileBtnElement.appendChild(labelElement);
-            fileBtnElement.onclick = () => { labelElement.click(); };
-
-            const inputElement = document.createElement("input");
-            containerDiv.appendChild(inputElement);
-            inputElement.type = "file";
-            inputElement.id = "answers-upload";
-            inputElement.accept = "application/json";
+            
+            const inputElement = fileBtnElement.querySelector("input[type=file]")
+            inputElement.accept = "application/json"
             inputElement.multiple = true;
-
+            
+            const tableElement = document.createElement("table");
+            containerDiv.appendChild(tableElement);
+            tableElement.className = "table is-bordered is-striped center";
+            const thead = document.createElement("thead");
+            tableElement.appendChild(thead);
+            const tableHeader = document.createElement("tr");
+            tableHeader.className = "is-primary";
+            for (const el of ["Quizz", "Joueur", "Date", "Heure", "Réponses"]) {
+                const element = document.createElement("th");
+                element.textContent = el;
+                tableHeader.appendChild(element)
+            }
+            thead.appendChild(tableHeader);
+            this._upDateTableBody(tableElement);
+           
             inputElement.addEventListener("change", () => {
                 for (let file of inputElement.files) {
                     this.loadAnswersFromFile(file, () => {
-                        this.showLoadPage();
+                        this._upDateTableBody(tableElement);
                     });
                 }
             });
         }
 
+        const buttons = document.createElement("div");
+        buttons.className = "buttons is-centered";
+        containerDiv.appendChild(buttons);
+
         // Bouton pour reset les joueurs
         const resetButton = document.createElement("button");
-        containerDiv.appendChild(resetButton);
+        resetButton.className = "button is-primary is-medium"
+        buttons.appendChild(resetButton);
         resetButton.textContent = "Reset Joueurs";
         resetButton.onclick = () => {
             this.usersAnswers = [];
@@ -197,8 +189,9 @@ export class QuizzCorrector {
 
         // Bouton pour démarrer
         const startButton = document.createElement("button");
-        containerDiv.appendChild(startButton);
+        startButton.className = "button is-primary is-medium"
         startButton.textContent = "Commencer la correction";
+        buttons.appendChild(startButton);
 
         startButton.onclick = () => {
             //sanitarize input here and send error message
@@ -239,8 +232,10 @@ export class QuizzCorrector {
 
         const questionDiv = document.createElement("div");
         this.container.appendChild(questionDiv);
+        questionDiv.className = "content is-medium has-text-centered"
 
         const titleElement = document.createElement("h3");
+        titleElement.className = "title is-3";
         titleElement.textContent = "Résultats";
         questionDiv.appendChild(titleElement);
 
@@ -251,16 +246,19 @@ export class QuizzCorrector {
         }
 
         const tableElement = document.createElement("table");
-        tableElement.className = "center";
+        tableElement.className = "table is-bordered is-striped center";
         questionDiv.appendChild(tableElement);
         {
+            const thead = document.createElement("thead");
+            tableElement.appendChild(thead);
             const tableHeader = document.createElement("tr");
+            tableHeader.className = "is-primary";
             for (const el of ["Nom", "Points"]) {
                 const element = document.createElement("th");
                 element.textContent = el;
                 tableHeader.appendChild(element)
             }
-            tableElement.appendChild(tableHeader);
+            thead.appendChild(tableHeader);
         }
 
         const maxPoints = this.quizzData.questions.map((x) => x.points).reduce((x, s) => x + s, 0);
@@ -274,6 +272,8 @@ export class QuizzCorrector {
         results.sort((a, b) => a.points - b.points);
         results.reverse();
 
+        const tbody = document.createElement("tbody");
+        tableElement.appendChild(tbody);
         for (let result of results) {
             const tableRow = document.createElement("tr");
             for (const el of [result.name, `${result.points}/${maxPoints}`]) {
@@ -281,7 +281,7 @@ export class QuizzCorrector {
                 element.textContent = el;
                 tableRow.appendChild(element)
             }
-            tableElement.appendChild(tableRow);
+            tbody.appendChild(tableRow);
         }
 
         // {
@@ -292,6 +292,7 @@ export class QuizzCorrector {
 
 
         const prevButton = document.createElement("button");
+        prevButton.className = "button is-primary is-medium"
         prevButton.textContent = "Previous";
         questionDiv.appendChild(prevButton);
         prevButton.onclick = () => { this.previous() };

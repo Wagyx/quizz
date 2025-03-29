@@ -1,0 +1,32 @@
+.image img {
+    width: auto;
+    height: 400px;
+  }
+
+  video.myvideo {
+    height: 400px;
+  }
+
+  .yt-embed-holder {
+    overflow: hidden;
+  }
+
+  .yt-audio {
+    visibility: hidden;
+    height: 0px;
+  }
+
+  #yt-player {
+    pointer-events: none;
+  }
+
+  .yt-embed-holder iframe {
+    width: 400%;
+    height: 400px;
+    margin-left: -150%;
+  }
+
+ .center {
+    margin-left:auto; 
+    margin-right:auto;
+}

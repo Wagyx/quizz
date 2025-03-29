@@ -2,7 +2,7 @@
 
 function createRow(array, tag) {
   const trElement = document.createElement("tr");
-  for (const el of array){
+  for (const el of array) {
     const element = document.createElement(tag);
     element.textContent = el;
     trElement.appendChild(element)
@@ -13,7 +13,7 @@ function createRow(array, tag) {
 /**
  * Classe responsable de l'affichage et de la gestion des réponses
  */
-export class CorrectionHandler{
+export class CorrectionHandler {
   /**
    * @param {Function} onChange - Fonction à appeler quand une réponse est modifiée
    */
@@ -22,22 +22,29 @@ export class CorrectionHandler{
     this.points = points;
   }
 
-  
+
   /**
    * Crée et affiche l'interface de réponse selon le type
    * @param {HTMLElement} container - Élément conteneur
    * @param {Array} usersAnswer- Objet question
    * @param {string} answer - Réponse actuelle (si elle existe)
    */
-  renderInterface( container, usersAnswer, answer) {
-    
-    const tableElement = document.createElement("table");
-    tableElement.className = "center";
-    container.appendChild(tableElement);
-    const tableHeader = createRow(["Réponse: ", answer, `Points (${this.points})`], "th");
-    tableElement.appendChild(tableHeader);
+  renderInterface(container, usersAnswer, answer) {
 
-    for (const u of usersAnswer){
+    const tableElement = document.createElement("table");
+    tableElement.className = "table is-bordered is-striped center";
+    container.appendChild(tableElement);
+    const thead = document.createElement("thead");
+    tableElement.appendChild(thead);
+    const tableHeader = createRow(["Réponse: ", answer, `Points/${this.points}`], "th");
+    tableHeader.className = "is-primary";
+    thead.appendChild(tableHeader);
+
+    const tbody = document.createElement("tbody");
+    tableElement.appendChild(tbody);
+    const validButtonClass = "button is-primary";
+    const invalidButtonClass = "button is-primary is-outlined";
+    for (const u of usersAnswer) {
       const trElement = document.createElement("tr");
       const userElement = document.createElement("td");
       userElement.textContent = u.name;
@@ -46,37 +53,29 @@ export class CorrectionHandler{
       const ansElement = document.createElement("td");
       ansElement.textContent = u.answer;
       trElement.appendChild(ansElement)
-      
+
       const pointsElement = document.createElement("td");
       trElement.appendChild(pointsElement)
+
       const buttons = [];
-      for (let pt=0; pt<=this.points; ++pt){
+      for (let pt = 0; pt <= this.points; ++pt) {
         const button = document.createElement("button");
-        button.className = u.point == pt ? "validAnswer" : "nonValidAnswer";
+        // button.className = "button is-primary"
+        button.className = u.point == pt ? validButtonClass : invalidButtonClass;
         button.textContent = pt;
         button.onclick = () => {
-          for (let b of buttons){
-            b.className = "nonValidAnswer";
+          for (let b of buttons) {
+            b.className = invalidButtonClass;
           }
-          button.className = "validAnswer";
+          button.className = validButtonClass;
           this.onChange(u.id, pt);
         };
         pointsElement.appendChild(button);
         buttons.push(button)
       }
-      tableElement.appendChild(trElement);
-
-
+      tbody.appendChild(trElement);
     }
 
-    
-    
-    // use this idea on a button
-    // answerElement.onkeyup = () => {
-    //   if (this.onAnswerChanged) {
-    //     this.onAnswerChanged(questionIndex, answerElement.value);
-    //   }
-    // };
-  } 
+  }
 
 }

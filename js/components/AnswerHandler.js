@@ -1,5 +1,5 @@
 import { shuffle } from "../utils.js";
-
+import { createInputText } from "../utils.js";
 /**
  * Classe responsable de l'affichage et de la gestion des réponses
  */
@@ -27,7 +27,6 @@ export class AnswerHandler {
     switch (question.answer_type) {
       case "single":
         this.createSingleElement(
-          question,
           container,
           questionIndex,
           currentAnswer
@@ -51,17 +50,12 @@ export class AnswerHandler {
    * @param {number} questionIndex - Index de la question
    * @param {string} currentAnswer - Réponse actuelle (si elle existe)
    */
-  createSingleElement(question, parent, questionIndex, currentAnswer) {
-    const labelElement = document.createElement("p");
-    labelElement.textContent = "Réponse:";
-    parent.appendChild(labelElement);
-
-    const answerElement = document.createElement("input");
-    answerElement.type = "text";
+  createSingleElement(parent, questionIndex, currentAnswer) {
+    const field = createInputText("Réponse:");
+    parent.appendChild(field);
+    const answerElement = field.querySelector(".input")
     answerElement.value = currentAnswer;
-    parent.appendChild(answerElement);
     answerElement.focus();
-
     answerElement.onkeyup = () => {
       if (this.onAnswerChanged) {
         this.onAnswerChanged(questionIndex, answerElement.value);
@@ -77,29 +71,30 @@ export class AnswerHandler {
    * @param {string} currentAnswer - Réponse actuelle (si elle existe)
    */
   createMultiElement(question, parent, questionIndex, currentAnswer) {
-    const labelElement = document.createElement("p");
+    const labelElement = document.createElement("strong");
     labelElement.textContent = "Réponse:";
     parent.appendChild(labelElement);
 
     const answerElement = document.createElement("div");
-    answerElement.className = "btn-group";
+    answerElement.className = "buttons";
     parent.appendChild(answerElement);
 
     const propositions = [...question.propositions];
     shuffle(propositions);
 
+    const buttonClass = "button is-fullwidth is-medium is-light is-outlined"
+    const buttonClassChosen = "button is-fullwidth is-medium is-primary"
     const buttons = [];
     for (let proposition of propositions) {
       const button = document.createElement("button");
-      button.className =
-        proposition === currentAnswer ? "selected" : "unselected";
+      button.className = proposition === currentAnswer ? buttonClassChosen : buttonClass;
       button.textContent = proposition;
 
       button.onclick = () => {
         for (let b of buttons) {
-          b.className = "unselected";
+          b.className = buttonClass;
         }
-        button.className = "selected";
+        button.className = buttonClassChosen;
 
         if (this.onAnswerChanged) {
           this.onAnswerChanged(questionIndex, proposition);

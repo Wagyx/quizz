@@ -136,7 +136,7 @@ export class QuestionRenderer {
         events: {
           'onReady': (event) => {
             event.target.mute();
-            event.target.setVolume(100);
+            event.target.setVolume(50);
           },
           'onStateChange': (event) => {
             console.log("YT player state", event.data)
@@ -161,6 +161,7 @@ export class QuestionRenderer {
       element.className = "myvideo";
       element.src = question.link;
       element.autoplay = true;
+      // element.volume = 1;
       divElement.appendChild(element);
     }
   }
@@ -171,9 +172,17 @@ export class QuestionRenderer {
    * @param {HTMLElement} parent - Élément parent
    */
   createImageElement(question, parent) {
+    const container = document.createElement("div")
+    container.className = 'columns is-flex is-centered';
+    parent.appendChild(container);
+
+    const figure = document.createElement("figure");
+    figure.className = "image"
+    container.appendChild(figure);
+
     const element = document.createElement("img");
     element.src = question.link;
-    parent.appendChild(element);
+    figure.appendChild(element);
   }
 
   /**

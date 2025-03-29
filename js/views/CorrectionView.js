@@ -46,17 +46,18 @@ export class CorrectionView {
 
     const questionDiv = document.createElement("div");
     this.container.appendChild(questionDiv);
+    questionDiv.className = "content is-medium has-text-centered"
 
     // Affichage de la catégorie
     const catElement = document.createElement("h3");
+    catElement.className = "title is-3";
     catElement.textContent = this.question.category;
     questionDiv.appendChild(catElement);
 
     // Affichage de la description
     const descElement = document.createElement("p");
-    descElement.textContent = `Question ${this.index + 1}/${this.total} : ${
-      this.question.description
-    }`;
+    descElement.innerHTML = `<em>Question ${this.index + 1}/${this.total} pour ${this.question.points} point${this.question.points>1?"s":""}</em> </br>\ 
+    <strong>${this.question.description}</strong>`;
     questionDiv.appendChild(descElement);
 
     // Rendu de la question (audio, vidéo, image ou texte)
@@ -65,13 +66,19 @@ export class CorrectionView {
     // Rendu de l'interface de réponse
     this.correctionHandler.renderInterface( questionDiv, this.usersAnswer, this.question.answer );
 
+    const buttons = document.createElement("div");
+    buttons.className = "buttons is-centered";
+    questionDiv.appendChild(buttons);
+
     const prevButton = document.createElement("button");
+    prevButton.className = "button is-primary is-medium"
     prevButton.textContent = "Previous";
-    questionDiv.appendChild(prevButton);
+    buttons.appendChild(prevButton);
     prevButton.onclick = ()=>{this.onPrevious()};
     const nextButton = document.createElement("button");
+    nextButton.className = "button is-primary is-medium"
     nextButton.textContent = "Next";
-    questionDiv.appendChild(nextButton);
+    buttons.appendChild(nextButton);
     nextButton.onclick = ()=>{this.onNext()};
 
 

@@ -1,4 +1,4 @@
-import { loadLocalJson, secondsToHMS } from "../utils.js"
+import { loadLocalJson, secondsToHMS, createInputText, createLoadFileButton } from "../utils.js"
 
 
 
@@ -6,7 +6,7 @@ function questionToHtmlString(quizzData) {
   const maxPoints = quizzData.questions.map((x) => x.points).reduce((x, s) => x + s, 0);
   const duration = quizzData.questions.map((x) => x.time).reduce((x, s) => x + s, 0);
   const hms = secondsToHMS(duration);
-  return `<u>Infos du quizz</u></br>
+  return `<strong>Infos du quizz</strong></br>
   Nom : ${quizzData.quizzName}</br>
   Date : ${quizzData.date}</br>
   Heure : ${quizzData.time}</br>
@@ -41,79 +41,63 @@ export class InstructionsView {
 
     const questionDiv = document.createElement("div");
     this.container.appendChild(questionDiv);
+    questionDiv.className = "content is-medium has-text-centered"
 
     const titleElement = document.createElement("h3");
+    titleElement.className = "title is-3";
     titleElement.textContent = "Instructions";
     questionDiv.appendChild(titleElement);
 
     const descElement = document.createElement("p");
     descElement.innerHTML =
-      "Vous avez un temps limité pour répondre à chaque question. <br> Veuillez ne pas quitter ou recharger la page pendant un tour.";
+      "Vous avez un temps limité pour répondre à chaque question. <br>\
+      Veuillez ne pas quitter ou recharger la page pendant un tour.";
     questionDiv.appendChild(descElement);
 
     // champ pour entrer le nom de l'utilisateur
-    {
-      const labelElement = document.createElement("label");
-      labelElement.htmlFor = "user-name";
-      labelElement.textContent = "Veuillez entrer votre pseudo";
-      questionDiv.appendChild(labelElement);
-
-      const answerElement = document.createElement("input");
-      labelElement.appendChild(answerElement);
-      answerElement.type = "text";
-      answerElement.id = "user-name";
-
-      answerElement.onkeyup = () => {
-        if (this.onUserName) {
-          this.onUserName(answerElement.value);
-        }
-      };
-    }
-    
+    const field = createInputText("Veuillez entrer votre pseudo");
+    questionDiv.appendChild(field);
+    const answerElement = field.querySelector(".input")
+    answerElement.onkeyup = () => {
+      if (this.onUserName) {
+        this.onUserName(answerElement.value);
+      }
+    };
 
     // Bouton pour charger des questions
     {
-      const fileBtnElement = document.createElement("button");
+      const fileBtnElement = createLoadFileButton("Chargez un fichier…", "file-upload");
       questionDiv.appendChild(fileBtnElement);
 
-      const labelElement = document.createElement("label");
-      labelElement.htmlFor = "file-upload";
-      labelElement.textContent = "Charger un quizz";
-      fileBtnElement.appendChild(labelElement);
-
-      fileBtnElement.onclick = () => {
-        labelElement.click();
-      };
-
-      const inputElement = document.createElement("input");
-      questionDiv.appendChild(inputElement);
-      inputElement.type = "file";
-      inputElement.id = "file-upload";
-      inputElement.accept = "application/json";
-      
       const questElement = document.createElement("p");
-      questElement.innerHTML = "Pas de quizz chargé"
+      questElement.innerHTML = "";
       questionDiv.appendChild(questElement);
 
+      const inputElement = fileBtnElement.querySelector("input[type=file]")
+      inputElement.accept = "application/json"
+
+      // const filenNameElement = fileBtnElement.querySelector(".file-name")
       inputElement.addEventListener("change", () => {
         if (inputElement.files.length == 1) {
-          this.loadQuestionsFromFile(inputElement.files[0],(data)=>{
+          const fileName = fileBtnElement.querySelector(".file-name");
+          fileName.textContent = inputElement.files[0].name;
+          this.loadQuestionsFromFile(inputElement.files[0], (data) => {
             questElement.innerHTML = questionToHtmlString(data);
           });
         }
       });
-
-      // Bouton pour démarrer
-      const startButton = document.createElement("button");
-      questionDiv.appendChild(startButton);
-      startButton.textContent = "Commencer";
-
-      startButton.onclick = () => {
-        if (this.onStart) {
-          this.onStart();
-        }
-      };
     }
+
+    // Bouton pour démarrer
+    const startButton = document.createElement("button");
+    questionDiv.appendChild(startButton);
+    startButton.className = "button is-primary is-medium"
+    startButton.textContent = "Commencer";
+    startButton.onclick = () => {
+      if (this.onStart) {
+        this.onStart();
+      }
+    };
 
   }
 

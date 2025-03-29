@@ -8,7 +8,7 @@ export class Timer {
    */
   constructor(timePerQuestion, onTimeUp) {
     this.timePerQuestion = timePerQuestion; //milliseconds
-    this.decrementTime = 100; //milliseconds
+    this.decrementTime = 1000/25; //milliseconds
     this.startTime = new Date();
     this.interval = null;
     this.onTimeUp = onTimeUp;
@@ -20,10 +20,11 @@ export class Timer {
    * @param {HTMLElement} container - Élément conteneur
    */
   appendTimerToContainer(container) {
-    this.timeElement = document.createElement("p");
+    this.timeElement = document.createElement("progress");
+    this.timeElement.className="progress is-primary";
     const now = new Date();
-    const remainingTime = this.timePerQuestion - (now - this.startTime);
-    this.timeElement.textContent = `Temps restant: ${(remainingTime / 1000).toFixed(0)}s`;
+    this.timeElement.value = now - this.startTime;
+    this.timeElement.max = this.timePerQuestion;
     container.appendChild(this.timeElement);
   }
 
@@ -35,7 +36,8 @@ export class Timer {
 
     this.interval = setInterval(() => {
       const now = new Date();
-      const remainingTime = this.timePerQuestion - (now - this.startTime);
+      const elapsedTime = now - this.startTime
+      const remainingTime = this.timePerQuestion - elapsedTime;
 
       if (remainingTime < 0) {
         this.stop();
@@ -43,7 +45,7 @@ export class Timer {
           this.onTimeUp();
         }
       } else if (this.timeElement) {
-        this.timeElement.textContent = `Temps restant: ${(remainingTime / 1000).toFixed(0)}s`;
+        this.timeElement.value = elapsedTime;
       }
     }, this.decrementTime);
   }

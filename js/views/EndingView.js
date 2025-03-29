@@ -23,28 +23,37 @@ export class EndingView {
 
     const questionDiv = document.createElement("div");
     this.container.appendChild(questionDiv);
+    questionDiv.className = "content is-medium has-text-centered"
+
 
     const titleElement = document.createElement("h3");
-    titleElement.textContent = `Merci d'avoir joué ${this.answerData.userName} ! Le quizz est terminé`;
+    titleElement.className = "title is-3";
+    titleElement.textContent = `Merci d'avoir joué ${this.answerData.userName} !`;
     questionDiv.appendChild(titleElement);
 
+
     const descElement = document.createElement("p");
-    descElement.textContent = "Veuillez sauvegarder vos réponses";
+    descElement.innerHTML = "Veuillez <strong>sauvegarder</strong> vos réponses et les transmettre au correcteur";
     questionDiv.appendChild(descElement);
 
+    const buttons = document.createElement("div");
+    buttons.className = "buttons is-centered";
+    questionDiv.appendChild(buttons);
+    
     // Bouton pour sauvegarder les réponses
     const saveButton = document.createElement("button");
-    questionDiv.appendChild(saveButton);
+    saveButton.className = "button is-primary is-medium"
     saveButton.textContent = "Sauvegarder";
-
+    buttons.appendChild(saveButton);
     saveButton.onclick = () => {
       saveTemplateAsFile("answers.json", this.answerData);
     };
 
     // Bouton pour commencer une nouvelle partie
     const resetButton = document.createElement("button");
-    questionDiv.appendChild(resetButton);
+    resetButton.className = "button is-dark is-medium"
     resetButton.textContent = "Nouvelle partie";
+    buttons.appendChild(resetButton);
 
     resetButton.onclick = () => {
       if (this.onNewRound) {

@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Quizz</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
-    <link rel="stylesheet" href="main.css" />
-    <link rel="icon" type="image/svg" href="favicon.svg" />
-  </head>
 
-  <body>
-    <nav><a href="index.html" >Quizz</a></nav>
+<head>
+  <title>Quizz</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <link rel="stylesheet" href="css/bulma.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="icon" type="image/svg" href="favicon.svg" />
+</head>
 
-    <h1>Quizz Corrector</h1>
+<body>
+  <nav class="breadcrumb is-medium is-centered has-bullet-separator" aria-label="breadcrumbs">
+    <ul>
+      <li>
+        <a href="index.html">Quizz Player</a>
+      </li>
+      <li class="is-active">
+        <a aria-current="page" href="index-corrector.html">Quizz Corrector</a>
+      </li>
+      <!-- <li> -->
+      <!-- <a href="index-editor.html" >Quizz Editor</a> -->
+      <!-- </li> -->
+    </ul>
+  </nav>
+  <h1 class="title is-1">Quizz Corrector</h1>
 
-    <div id="quizz"></div>
+  <div id="quizz" class="section is-centered"></div>
 
-    <script type="module" src="js/main-corrector.js"></script>
-  </body>
+  <script type="module" src="js/main-corrector.js"></script>
+</body>
+
 </html>
