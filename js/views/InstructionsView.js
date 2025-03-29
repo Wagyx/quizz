@@ -50,8 +50,9 @@ export class InstructionsView {
 
     const descElement = document.createElement("p");
     descElement.innerHTML =
-      "Vous avez un temps limité pour répondre à chaque question. <br>\
-      Veuillez ne pas quitter ou recharger la page pendant un tour.";
+      "Vous avez un temps limité pour répondre à chaque question.<br>\
+      Veuillez ne pas quitter ou recharger la page pendant un tour.<br>\
+      Pour une expérience optimale, appuyez sur F11 pour mettre en plein écran";
     questionDiv.appendChild(descElement);
 
     // champ pour entrer le nom de l'utilisateur
