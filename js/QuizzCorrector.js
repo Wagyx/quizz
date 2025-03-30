@@ -5,7 +5,7 @@ export class QuizzCorrector {
 
     constructor(container) {
         this.container = container;
-        this.quizzData = {};
+        this.quizzData = undefined;
         this.usersAnswers = [];
         this.currentIndex = 0;
 
@@ -15,12 +15,12 @@ export class QuizzCorrector {
         const firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        this.loadInitialQuestions("questions/quizz-test.json");
-        this.loadInitialAnswers("questions/answers-test.json")
-        this.loadInitialAnswers("questions/answers2-test.json")
-        this.loadInitialAnswers("questions/answers3-test.json")
+        // this.loadInitialQuestions("questions/quizz-test.json");
+        // this.loadInitialAnswers("questions/answers-test.json")
+        // this.loadInitialAnswers("questions/answers2-test.json")
+        // this.loadInitialAnswers("questions/answers3-test.json")
 
-        // this.showLoadPage();
+        this.showLoadPage();
     }
 
 

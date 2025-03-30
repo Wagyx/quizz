@@ -12,7 +12,7 @@
             "answer_type": "single",
             "answer": "Rick Astley",
             "points": 1,
-            "time":3
+            "time":1
         },
         {
             "category": "Musique",
@@ -22,7 +22,7 @@
             "answer_type": "single",
             "answer": "Rick Astley",
             "points": 1,
-            "time":5
+            "time":1
         },
         {
             "category": "Musique",
@@ -32,7 +32,7 @@
             "answer_type": "single",
             "answer": "Rick Astley",
             "points": 1,
-            "time":5
+            "time":1
         },
         {
             "category": "Musique",
@@ -42,7 +42,7 @@
             "answer_type": "single",
             "answer": "Rick Astley",
             "points": 2,
-            "time":5
+            "time":1
         },
         {
             "category": "Art",
@@ -51,16 +51,17 @@
             "answer_type": "single",
             "answer": "Léonard de Vinci",
             "points": 1,
-            "time":5
+            "time":1
         },
         {
             "category": "Art",
             "description": "Dans quelle ville se situe le musée du Quai Branly ?",
             "question_type": "texte",
-            "answer_type": "single",
+            "answer_type": "multi",
             "answer": "Paris",
+            "propositions":["Paris", "Londres", "Pékin", "New York"],
             "points": 3,
-            "time":5
+            "time":1
         }
     ]
 }

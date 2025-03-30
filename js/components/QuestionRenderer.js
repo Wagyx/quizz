@@ -101,7 +101,7 @@ export class QuestionRenderer {
   }
 
   /**
-   * Crée un élément vidéo
+   * Crée un élément video
    * @param {Object} question - Données de la question
    * @param {HTMLElement} parent - Élément parent
    */

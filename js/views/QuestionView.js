@@ -57,7 +57,7 @@ export class QuestionView {
     <strong>${this.question.description}</strong>`;
     questionDiv.appendChild(descElement);
 
-    // Rendu de la question (audio, vidéo, image ou texte)
+    // Rendu de la question (audio, video, image ou texte)
     this.questionRenderer.renderQuestion(this.question, questionDiv);
 
     // Rendu de l'interface de réponse
