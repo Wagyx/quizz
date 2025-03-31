@@ -1,0 +1,90 @@
+{
+    "quizzName": "default",
+    "creator": "Wagyx",
+    "date": "31/03/2025",
+    "time": "22:15:18",
+    "questions": [
+        {
+            "category": "Humour",
+            "description": "Si un avion s'écrase à la frontière des États-Unis et du Canada, où enterre-t'on les survivants ?",
+            "question_type": "texte",
+            "answer_type": "single",
+            "answer": "On n'enterre pas les survivants",
+            "points": 1,
+            "time":25
+        },
+        {
+            "category": "Humour",
+            "description": "Comment s'appelle cette humoriste ?",
+            "question_type": "audio",
+            "link": "https://www.youtube.com/embed/i24zClY5lMA",
+            "answer_type": "multi",
+            "answer": "Florence Foresti",
+            "propositions":["Florence Foresti","Anne Roumanoff","Muriel Robin","Blanche Gardin"],
+            "points": 1,
+            "time":30
+        },
+        {
+            "category": "Humour",
+            "description": "Comment s'appelle cette parodie de jeu télévisé ?",
+            "question_type": "video",
+            "link": "https://www.youtube.com/embed/8bDmeeGVNvc",
+            "answer_type": "single",
+            "answer": "Kamoulox",
+            "points": 1,
+            "time":30
+        },
+        {
+            "category": "Insolite",
+            "description": "Qu'est-ce qui tue le plus chaque année ?",
+            "question_type": "texte",
+            "answer_type": "multi",
+            "answer": "Les chutes de noix de coco",
+            "propositions":["Les chutes du lit", "Les chutes de météorites", "Les chutes de noix de coco", "Les attaques de requins"],
+            "points": 1,
+            "time":25
+        },
+        {
+            "category": "Meme",
+            "description": "Qui chante cette chanson ?",
+            "question_type": "audio",
+            "link": "https://www.youtube.com/embed/nsCIeklgp1M",
+            "answer_type": "single",
+            "answer": "Rick Astley",
+            "points": 1,
+            "time":30
+        },
+        {
+            "category": "Humour",
+            "description": "Quel groupe d'humoriste a réalisé ce sketch ?",
+            "question_type": "video",
+            "link": "https://www.youtube.com/embed/QuGcoOJKXT8",
+            "answer_type": "multi",
+            "answer": "Les Inconnus",
+            "propositions":["Les Nuls", "Les Inconnus", "Golden Moustache", "Studio Bagel"],
+            "points": 1,
+            "time":30
+        },
+        {
+            "category": "Architecture",
+            "description": "Comment s'appelle cette structure ?",
+            "question_type": "image",
+            "link": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Tokyo_Tower_20060211.JPG/390px-Tokyo_Tower_20060211.JPG",
+            "answer_type": "single",
+            "answer": "La tour de Tokyo",
+            "points": 1,
+            "time":30
+        },
+        {
+            "category": "Vocabulaire",
+            "description": "Comment se nomme le processus où l'on reconnaît une forme familière dans un paysage, un nuage, de la fumée, une tache d'encre, etc ?",
+            "question_type": "image",
+            "link": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/%D0%91%D0%BE%D0%BB%D0%BE%D1%82%D0%BE-%D1%81%D0%BC%D0%B0%D0%B9%D0%BB%D0%B8%D0%BA.jpg/330px-%D0%91%D0%BE%D0%BB%D0%BE%D1%82%D0%BE-%D1%81%D0%BC%D0%B0%D0%B9%D0%BB%D0%B8%D0%BA.jpg",
+            "answer_type": "multi",
+            "answer": "Paréidolie",
+            "propositions":["Apophénie","Anamorphose","Paréidolie","Litote"],
+            "points": 1,
+            "time":30
+        }
+    ]
+}
