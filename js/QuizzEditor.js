@@ -176,6 +176,7 @@ export class QuizzEditor {
             propField.className += " column";
             propositionsColDiv.appendChild(propField);
             const propElement = propField.querySelectorAll("input")[0];
+            propElement.value = question.propositions[i];
             propElement.addEventListener("change", (event) => {
                 question.propositions[i] = sanitize(event.target.value);
             });
@@ -277,7 +278,7 @@ export class QuizzEditor {
         const currentdate = new Date();
         const zeroPad = (num, places) => String(num).padStart(places, '0')
         const quizzData = {
-            name: this.quizzData.quizzName,
+            quizzName: this.quizzData.quizzName,
             creator: this.quizzData.creator,
             date: `${zeroPad(currentdate.getDate(), 2)}/${zeroPad(currentdate.getMonth() + 1, 2)}/${zeroPad(currentdate.getFullYear(), 4)}`,
             time: `${zeroPad(currentdate.getHours(), 2)}:${zeroPad(currentdate.getMinutes(), 2)}:${zeroPad(currentdate.getSeconds(), 2)}`,
