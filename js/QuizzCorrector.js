@@ -109,10 +109,10 @@ export class QuizzCorrector {
         this.container.appendChild(containerDiv);
         
         
-        const titleElement = document.createElement("h3");
-        titleElement.className = "title is-3";
-        titleElement.textContent = "Correction";
-        containerDiv.appendChild(titleElement);
+        // const titleElement = document.createElement("h3");
+        // titleElement.className = "title is-3";
+        // titleElement.textContent = "Correction";
+        // containerDiv.appendChild(titleElement);
         
         // Bouton pour charger des questions
         {

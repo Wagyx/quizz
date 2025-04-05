@@ -1,4 +1,4 @@
-import { saveTemplateAsFile } from "../utils.js";
+import { saveAsJsonFile } from "../utils.js";
 
 /**
  * Vue pour afficher l'écran de fin du quizz
@@ -46,7 +46,7 @@ export class EndingView {
     saveButton.textContent = "Sauvegarder";
     buttons.appendChild(saveButton);
     saveButton.onclick = () => {
-      saveTemplateAsFile("answers.json", this.answerData);
+      saveAsJsonFile("answers.json", this.answerData);
     };
 
     // Bouton pour commencer une nouvelle partie

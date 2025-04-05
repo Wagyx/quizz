@@ -3,7 +3,7 @@
  * @param {string} filename - Nom du fichier à créer
  * @param {Object} dataObjToWrite - Données à écrire dans le fichier
  */
-export function saveTemplateAsFile(filename, dataObjToWrite) {
+export function saveAsJsonFile(filename, dataObjToWrite) {
   const blob = new Blob([JSON.stringify(dataObjToWrite)], {
     type: "text/json",
   });
@@ -73,7 +73,15 @@ export function sanitize(string) {
   return string.replace(reg, (match) => (map[match]));
 }
 
-function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
+export function isNumber(text) { return /^-?[\d.]+(?:e-?\d+)?$/.test(text); }
+
+export function sanitizeNumber(text, defaultValue=0){
+  return isNumber(text) ? text : defaultValue;
+}
+
+export function clamp(x,min,max){
+  return Math.min(Math.max(x,min),max);
+}
 
 export function sanitizeQuizzData(data) {
   data.date = sanitize(data.date);
@@ -88,8 +96,8 @@ export function sanitizeQuizzData(data) {
     if (!question.answer_type) {
       question.answer = sanitize(question.answer);
     }
-    question.points = isNumber(question.points) ? question.points : 0;
-    question.time = isNumber(question.time) ? question.time : 0;
+    question.points = sanitizeNumber(question.points, 0);
+    question.time = sanitizeNumber(question.time,0);
   }
 
   return data;
@@ -138,6 +146,56 @@ export function createInputText(msg) {
   return field;
 }
 
+export function createInputNumber(msg, min, max) {
+  const field = document.createElement("div");
+  field.className = "field";
+
+  const label = document.createElement("label");
+  label.className = "label is-medium";
+  label.textContent = msg;
+  field.appendChild(label);
+
+  const control = document.createElement("div");
+  control.className = "control";
+  field.appendChild(control);
+
+  const input = document.createElement("input");
+  control.append(input);
+  input.className = "input is-focused is-primary"
+  input.type = "number";
+  input.min=min;
+  input.max=max;
+
+  return field;
+}
+
+export function createDropdown(labelName, options) {
+  const field = document.createElement("div");
+  field.className = "field";
+
+  const label = document.createElement("label");
+  label.className = "label is-medium";
+  label.textContent = labelName;
+  field.appendChild(label);
+
+  const control = document.createElement("div");
+  control.className = "control";
+  field.appendChild(control);
+
+  const divSelect = document.createElement("div");
+  divSelect.className = "select";
+  control.appendChild(divSelect);
+
+  const select = document.createElement("select");
+  divSelect.appendChild(select);
+  for (let opt of options){
+    const el = document.createElement("option");
+    el.textContent = opt;
+    select.appendChild(el);
+  }
+  return field;
+}
+
 export function createLoadFileButton(msg, name, hasName = true) {
   const container = document.createElement("div");
   container.className = "file is-primary is-centered" + (hasName ? " has-name" : "");
@@ -175,7 +233,14 @@ export function createLoadFileButton(msg, name, hasName = true) {
     file_name.className = "file-name";
     file_name.textContent = "Aucun fichier chargé";
   }
-
-
   return container;
+}
+
+
+export function reverseKeyValues(obj) {
+  const reversed = {};
+  for (let key of Object.keys(obj)){
+    reversed[obj[key]]=key;
+  }
+  return reversed;
 }

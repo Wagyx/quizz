@@ -60,7 +60,7 @@ export class Quizz {
     this.currentView.render();
   }
 
-  
+
 
   /**
    * Affiche l'écran de fin du quizz
@@ -70,13 +70,14 @@ export class Quizz {
       this.currentView.stopTimer?.();
     }
     const currentdate = new Date();
+    const zeroPad = (num, places) => String(num).padStart(places, '0')
 
     const answerData = {
-      "quizzName": this.quizzData.quizzName,
-      "userName": this.userName,
-      "date": `${currentdate.getDate()}/${currentdate.getMonth() + 1}/${currentdate.getFullYear()}`,
-      "time": `${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`,
-      "answers": this.answers,
+      quizzName: this.quizzData.quizzName,
+      userName: this.userName,
+      date: `${zeroPad(currentdate.getDate(), 2)}/${zeroPad(currentdate.getMonth() + 1, 2)}/${zeroPad(currentdate.getFullYear(), 4)}`,
+      time: `${zeroPad(currentdate.getHours(), 2)}:${zeroPad(currentdate.getMinutes(), 2)}:${zeroPad(currentdate.getSeconds(), 2)}`,
+      answers: this.answers,
     }
     this.currentView = new EndingView(this.container, answerData, () => {
       this.currentIndex = -2;
