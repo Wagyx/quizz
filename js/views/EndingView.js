@@ -46,7 +46,7 @@ export class EndingView {
     saveButton.textContent = "Sauvegarder";
     buttons.appendChild(saveButton);
     saveButton.onclick = () => {
-      saveAsJsonFile("answers.json", this.answerData);
+      saveAsJsonFile(`answer-${this.answerData.userName}.json`, this.answerData);
     };
 
     // Bouton pour commencer une nouvelle partie

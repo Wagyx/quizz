@@ -83,17 +83,26 @@ export function clamp(x,min,max){
   return Math.min(Math.max(x,min),max);
 }
 
+function sanitizeAndError(value,msg){
+  if (value) {
+    return sanitize(value);
+  }
+  else {
+    console.log(msg);
+  }
+}
+
 export function sanitizeQuizzData(data) {
-  data.date = sanitize(data.date);
-  data.time = sanitize(data.time);
-  data.creator = sanitize(data.creator);
-  data.quizzName = sanitize(data.quizzName);
+  data.date = sanitizeAndError(data.date,"date is missing or undefined in quizz file");
+  data.time = sanitizeAndError(data.time,"time is missing or undefined in quizz file");
+  data.creator = sanitizeAndError(data.creator,"creator is missing or undefined in quizz file");
+  data.quizzName = sanitizeAndError(data.quizzName,"quizzName is missing or undefined in quizz file");
   for (let question of data.questions) {
-    question.category = sanitize(question.category);
-    question.description = sanitize(question.description);
-    question.question_type = sanitize(question.question_type);
-    question.answer_type = sanitize(question.answer_type);
-    if (!question.answer_type) {
+    question.category = sanitizeAndError(question.category,"category is missing or undefined in question");
+    question.description = sanitizeAndError(question.description,"description is missing or undefined in question");
+    question.question_type = sanitizeAndError(question.question_type,"question_type is missing or undefined in question");
+    question.answer_type = sanitizeAndError(question.answer_type,"answer_type is missing or undefined in question");
+    if (question.answer) {
       question.answer = sanitize(question.answer);
     }
     question.points = sanitizeNumber(question.points, 0);
@@ -104,10 +113,10 @@ export function sanitizeQuizzData(data) {
 }
 
 export function sanitizeAnswerData(userData) {
-  userData.date = sanitize(userData.date);
-  userData.time = sanitize(userData.time);
-  userData.userName = sanitize(userData.userName);
-  userData.quizzName = sanitize(userData.quizzName);
+  userData.date = sanitizeAndError(userData.date, "date is missing or undefined in answer file");
+  userData.time = sanitizeAndError(userData.time, "time is missing or undefined in answer file");
+  userData.userName = sanitizeAndError(userData.userName, "userName is missing or undefined in answer file");
+  userData.quizzName = sanitizeAndError(userData.quizzName, "quizzName is missing or undefined in answer file");
   for (let i = 0, l = userData.answers.length; i < l; ++i) {
     userData.answers[i] = sanitize(userData.answers[i]);
   }
