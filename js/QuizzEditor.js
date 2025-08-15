@@ -296,7 +296,7 @@ export class QuizzEditor {
             };
 
             if (question.answer_type == "multi") {
-                q.propositions = question.propositions;
+                q.propositions = [...question.propositions];
                 q.propositions.push(question.answer);
             }
             if (this.hasLink[question.question_type]) {
